@@ -658,9 +658,17 @@ body { padding-top: var(--top-ticker-height); }
 .luv-change.down{color:#ff8291}
 .luv-change.flat{color:#c0d0e7}
 .luv-quote .luv-status{font-size:11px;color:#b4c7e0}
+/* Regular-session market indicator, tucked under LUV to keep the header slim. */
+.luv-symbol-stack{display:flex;flex:none;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.luv-market-state{display:inline-flex;align-items:center;justify-content:center;gap:4px;
+  border:1px solid #536986;border-radius:5px;background:#243a56;color:#cbdaee;
+  padding:2px 5px;font-size:9px;font-weight:850;line-height:1;letter-spacing:.045em;white-space:nowrap}
+.luv-market-state::before{content:"";width:6px;height:6px;flex:none;border-radius:50%;background:currentColor}
+.luv-market-state.is-open{border-color:#368b69;background:#124a38;color:#a6f3c7}
+.luv-market-state.is-closed{border-color:#96535a;background:#452936;color:#ffc2c9}
 .news-ticker-container{flex:1;min-width:0;display:flex;align-items:stretch;overflow:hidden}
-.news-ticker-label{flex:0 0 auto;display:flex;align-items:center;padding:0 14px 0 17px;
-  font-size:10px;font-weight:850;letter-spacing:.09em;color:#ffe39a;background:#14263d;
+.news-ticker-label{flex:0 0 38px;display:flex;align-items:center;justify-content:center;padding:0;
+  font-size:17px;line-height:1;letter-spacing:0;color:#ffe39a;background:#14263d;
   border-right:1px solid #2d4763;white-space:nowrap}
 .news-restart{
   flex:0 0 33px;display:flex;align-items:center;justify-content:center;
@@ -690,12 +698,13 @@ body { padding-top: var(--top-ticker-height); }
  .luv-symbol{font-size:11px}
  .luv-quote .luv-price{font-size:13px}
  .luv-quote .luv-change{font-size:10px}
- .news-ticker-label{display:none}
+ .news-ticker-label{display:flex;flex-basis:32px;font-size:16px}
  .news-scroll-item{font-size:11px}
 }
 @media(max-width:420px){
  :root{--top-ticker-height:39px}
  .luv-quote{gap:4px;padding:4px 8px}
+ .luv-market-state{font-size:8px;padding:2px 4px;gap:3px}
  .luv-quote .luv-change{font-size:10px}
  .news-scroll-group{gap:25px;padding-right:25px}
  .news-restart{flex-basis:30px}
@@ -1027,11 +1036,48 @@ html[data-theme="dark"] #seconds-to-minutes-calculator h2{color:#fff;}
   .tool-card #seconds-to-minutes-calculator .stm-content,.tool-card .zulu-content{padding:11px 10px 12px}
 }
 </style>
+
+<style id="leader-title-emoji-strip">
+/* Compact hearts directly beneath the Leader Tools title. */
+.page-header > .leader-title-block {display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:3px;min-width:0;}
+.leader-title-emojis {display:flex;align-items:center;gap:5px;min-height:20px;line-height:1;white-space:nowrap;}
+.leader-title-emoji {display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;font-size:18px;line-height:20px;}
+/* The heart strip doubles as a copy control without changing the header layout. */
+.page-header > .leader-title-block {position:relative;}
+button.leader-title-emojis {
+  appearance:none;
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(219,235,255,.24);
+  margin:0;
+  padding:2px 8px 3px;
+  color:inherit;
+  font:inherit;
+  cursor:copy;
+  -webkit-user-select:none;
+  user-select:none;
+  border-radius:999px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 2px 8px rgba(0,0,0,.14);
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+}
+button.leader-title-emojis:hover {background:rgba(255,255,255,.18);border-color:rgba(233,242,255,.34);filter:brightness(1.08);}
+button.leader-title-emojis:focus-visible {outline:2px solid #9bc5ff;outline-offset:3px;border-radius:999px;}
+.emoji-copy-feedback {position:absolute;left:78px;bottom:-1px;z-index:5;background:#264668;color:#eaf7ff;border:1px solid #6f9ccd;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:750;line-height:1.25;white-space:nowrap;pointer-events:none;box-shadow:0 2px 9px #0005;}
+.emoji-copy-feedback[hidden] {display:none;}
+</style>
 </head>
 <body><div class="brandline" aria-hidden="true"></div>
 <main class="shell">
 <header class="page-header">
-  <div><h1>Leader Tools</h1></div>
+  <div class="leader-title-block">
+    <h1>Leader Tools</h1>
+    <button type="button" class="leader-title-emojis" id="copy-leader-hearts" aria-label="Triple-click to copy blue, red, and yellow hearts" title="Triple-click to copy 💙 ❤️ 💛 (or press Enter)">
+      <span class="leader-title-emoji" aria-hidden="true">💙</span>
+      <span class="leader-title-emoji" aria-hidden="true">❤️</span>
+      <span class="leader-title-emoji" aria-hidden="true">💛</span>
+    </button>
+    <span id="emoji-copy-feedback" class="emoji-copy-feedback" role="status" aria-live="polite" hidden></span>
+  </div>
   <div class="display-actions" aria-label="Calculator Actions">
     <button type="button" class="display-btn timer-launch" id="timer-launch" aria-expanded="false" aria-controls="leader-timer-panel" aria-haspopup="dialog" title="Open Timer">
       <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="9"/><path d="M12 8v5l3 2M9 2h6"/></svg>
@@ -1514,12 +1560,15 @@ html[data-theme="dark"] #seconds-to-minutes-calculator h2{color:#fff;}
 
 <aside class="bottom-info-ticker" aria-label="Southwest News And LUV Stock Price">
   <a class="luv-quote" href="https://finance.yahoo.com/quote/LUV/" target="_blank" rel="noopener noreferrer" title="LUV Market Quote: Updates At :00, :15, :30 And :45. Data May Be Delayed.">
-    <span class="luv-symbol">LUV</span>
+    <span class="luv-symbol-stack">
+      <span class="luv-symbol">LUV</span>
+      <span id="luv-market-state" class="luv-market-state" aria-label="Checking NYSE Regular Trading Hours" title="Checking Market Hours">CHECK</span>
+    </span>
     <span id="luv-price" class="luv-price" aria-live="polite">--</span>
     <span id="luv-change" class="luv-status" aria-label="Stock Price Status">Loading...</span>
   </a>
   <div class="news-ticker-container">
-    <a class="news-ticker-label" href="https://www.swamedia.com/news-and-stories/news-releases" target="_blank" rel="noopener noreferrer" title="Southwest News From The Last 30 Days">SWA NEWS</a>
+    <a class="news-ticker-label" href="https://www.swamedia.com/news-and-stories/news-releases" target="_blank" rel="noopener noreferrer" title="Southwest News From The Last 30 Days" aria-label="Southwest News From The Last 30 Days">📰</a>
     <div id="news-ticker-window" class="news-ticker-window" aria-label="Latest Southwest Airlines News Releases" aria-live="off">
       <span class="news-fallback">Loading Southwest News Releases...</span>
     </div>
@@ -2031,6 +2080,7 @@ html[data-theme="dark"] #seconds-to-minutes-calculator h2{color:#fff;}
   const newsRestart = document.getElementById('news-restart');
   const priceOut = document.getElementById('luv-price');
   const changeOut = document.getElementById('luv-change');
+  const marketStateOut = document.getElementById('luv-market-state');
   let lastQuoteFetch = 0;
   let quoteBusy = false;
 
@@ -2185,6 +2235,125 @@ html[data-theme="dark"] #seconds-to-minutes-calculator h2{color:#fff;}
       drawNewsMessage('News Feed Unavailable', 'Open Southwest Newsroom ↗');
     }
   }
+
+  // Market status uses the NYSE cash-equities regular session, not the (possibly
+  // delayed) stock quote. America/New_York automatically handles EDT / EST.
+  // Official 2026–2028 holiday / early-close calendar:
+  // https://www.nyse.com/trade/hours-calendars
+  const confirmedHolidays = {
+    2026: {
+      '2026-01-01': 'New Year’s Day', '2026-01-19': 'Martin Luther King Jr. Day',
+      '2026-02-16': 'Washington’s Birthday', '2026-04-03': 'Good Friday',
+      '2026-05-25': 'Memorial Day', '2026-06-19': 'Juneteenth',
+      '2026-07-03': 'Independence Day (observed)', '2026-09-07': 'Labor Day',
+      '2026-11-26': 'Thanksgiving', '2026-12-25': 'Christmas Day'
+    },
+    2027: {
+      '2027-01-01': 'New Year’s Day', '2027-01-18': 'Martin Luther King Jr. Day',
+      '2027-02-15': 'Washington’s Birthday', '2027-03-26': 'Good Friday',
+      '2027-05-31': 'Memorial Day', '2027-06-18': 'Juneteenth (observed)',
+      '2027-07-05': 'Independence Day (observed)', '2027-09-06': 'Labor Day',
+      '2027-11-25': 'Thanksgiving', '2027-12-24': 'Christmas Day (observed)'
+    },
+    2028: {
+      '2028-01-17': 'Martin Luther King Jr. Day',
+      '2028-02-21': 'Washington’s Birthday', '2028-04-14': 'Good Friday',
+      '2028-05-29': 'Memorial Day', '2028-06-19': 'Juneteenth',
+      '2028-07-04': 'Independence Day', '2028-09-04': 'Labor Day',
+      '2028-11-23': 'Thanksgiving', '2028-12-25': 'Christmas Day'
+    }
+  };
+  const confirmedEarlyCloses = new Set([
+    '2026-11-27', '2026-12-24',
+    '2027-11-26',
+    '2028-07-03', '2028-11-24'
+  ]);
+  const easternClock = new Intl.DateTimeFormat('en-US', {
+    timeZone:'America/New_York', year:'numeric',month:'2-digit',day:'2-digit',
+    weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'
+  });
+  const padDate = n => String(n).padStart(2,'0');
+  const dateKey = (year, month, day) => `${year}-${padDate(month)}-${padDate(day)}`;
+  function nthWeekday(year, month, weekday, ordinal) {
+    const first = new Date(Date.UTC(year,month-1,1)).getUTCDay();
+    return 1 + (weekday-first+7)%7 + (ordinal-1)*7;
+  }
+  function lastWeekday(year, month, weekday) {
+    const last = new Date(Date.UTC(year,month,0));
+    return last.getUTCDate() - (last.getUTCDay()-weekday+7)%7;
+  }
+  function observedHoliday(year, month, day) {
+    const actual = new Date(Date.UTC(year,month-1,day));
+    const weekday = actual.getUTCDay();
+    if(weekday===6) actual.setUTCDate(actual.getUTCDate()-1);
+    if(weekday===0) actual.setUTCDate(actual.getUTCDate()+1);
+    return dateKey(actual.getUTCFullYear(),actual.getUTCMonth()+1,actual.getUTCDate());
+  }
+  function goodFridayKey(year) {
+    // Gregorian computus: Easter Sunday minus two days.
+    const a=year%19,b=Math.floor(year/100),c=year%100,d=Math.floor(b/4),e=b%4;
+    const f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3);
+    const h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4;
+    const l=(32+2*e+2*i-h-k+7*7)%7;
+    const m=Math.floor((a+11*h+22*l)/451);
+    const month=Math.floor((h+l-7*m+114)/31);
+    const day=(h+l-7*m+114)%31+1;
+    const friday=new Date(Date.UTC(year,month-1,day-2));
+    return dateKey(friday.getUTCFullYear(),friday.getUTCMonth()+1,friday.getUTCDate());
+  }
+  function regularHolidays(year) {
+    // Rule-based fallback for future years not yet in the published NYSE calendar.
+    const dates = {};
+    function mark(key, label){dates[key]=label;}
+    // When New Year's Day falls on Saturday, NYSE does not close the prior Friday.
+    if(new Date(Date.UTC(year,0,1)).getUTCDay()!==6)
+      mark(observedHoliday(year,1,1),'New Year’s Day');
+    mark(dateKey(year,1,nthWeekday(year,1,1,3)),'Martin Luther King Jr. Day');
+    mark(dateKey(year,2,nthWeekday(year,2,1,3)),'Washington’s Birthday');
+    mark(goodFridayKey(year),'Good Friday');
+    mark(dateKey(year,5,lastWeekday(year,5,1)),'Memorial Day');
+    mark(observedHoliday(year,6,19),'Juneteenth');
+    mark(observedHoliday(year,7,4),'Independence Day');
+    mark(dateKey(year,9,nthWeekday(year,9,1,1)),'Labor Day');
+    mark(dateKey(year,11,nthWeekday(year,11,4,4)),'Thanksgiving');
+    mark(observedHoliday(year,12,25),'Christmas Day');
+    return dates;
+  }
+  function marketHoursOn(year,month,day) {
+    const key=dateKey(year,month,day);
+    const weekday=new Date(Date.UTC(year,month-1,day)).getUTCDay();
+    if(weekday===0||weekday===6) return {closed:'Weekend'};
+    const holiday=(confirmedHolidays[year]||regularHolidays(year))[key];
+    if(holiday) return {closed:holiday};
+    const isEarlyClose=confirmedEarlyCloses.has(key) ||
+      (!(year in confirmedHolidays) && month===11 &&
+       day===nthWeekday(year,11,4,4)+1);
+    return {closeMinutes:isEarlyClose?13*60:16*60,early:isEarlyClose};
+  }
+  function updateMarketStatus() {
+    if(!marketStateOut)return;
+    const parts=Object.fromEntries(easternClock.formatToParts(new Date())
+      .filter(part=>part.type!=='literal').map(part=>[part.type,part.value]));
+    const year=Number(parts.year),month=Number(parts.month),day=Number(parts.day);
+    const minutes=Number(parts.hour)*60+Number(parts.minute);
+    const session=marketHoursOn(year,month,day);
+    const isOpen=!session.closed && minutes>=9*60+30 && minutes<session.closeMinutes;
+    let description;
+    if(session.closed) description=`Closed for ${session.closed}`;
+    else if(minutes<9*60+30) description='Opens today at 9:30 AM ET';
+    else if(isOpen) description=`Closes today at ${session.early?'1:00':'4:00'} PM ET${session.early?' (scheduled early close)':''}`;
+    else description=`Closed for the day${session.early?' (early close at 1:00 PM ET)':''}`;
+    const scheduleNote=year>=2026&&year<=2028?'NYSE published 2026–2028 calendar':'Typical NYSE schedule; special closures may differ';
+    marketStateOut.textContent=isOpen?'OPEN':'CLOSED';
+    marketStateOut.className='luv-market-state '+(isOpen?'is-open':'is-closed');
+    marketStateOut.title=`NYSE regular market ${isOpen?'OPEN':'CLOSED'} · ${description} · ${scheduleNote}. Market halts are not reflected.`;
+    marketStateOut.setAttribute('aria-label',`NYSE regular stock market ${isOpen?'open':'closed'}. ${description}.`);
+  }
+  updateMarketStatus();
+  // Check frequently enough to switch automatically at the market-open / close boundary.
+  setInterval(updateMarketStatus,15000);
+  window.addEventListener('focus',updateMarketStatus);
+
   async function quoteViaProxy(url) {
     const response = await fetchWithTimeout(url, 9000);
     const body = await response.json();
@@ -2236,6 +2405,64 @@ html[data-theme="dark"] #seconds-to-minutes-calculator h2{color:#fff;}
   updateNews(); // On every full page load or reload.
   updateStock();
   scheduleQuarterHour();
+})();
+</script>
+<script id="leader-hearts-copy-script">
+(() => {
+  'use strict';
+  const hearts = document.getElementById('copy-leader-hearts');
+  const feedback = document.getElementById('emoji-copy-feedback');
+  if (!hearts || !feedback) return;
+  const textToCopy = '💙 ❤️ 💛';
+  let feedbackTimeout;
+
+  function showFeedback(message) {
+    feedback.textContent = message;
+    feedback.hidden = false;
+    window.clearTimeout(feedbackTimeout);
+    feedbackTimeout = window.setTimeout(() => {
+      feedback.hidden = true;
+      feedback.textContent = '';
+    }, 1750);
+  }
+
+  function legacyCopy(text) {
+    const field = document.createElement('textarea');
+    field.value = text;
+    field.setAttribute('readonly', '');
+    field.style.position = 'fixed';
+    field.style.left = '-9999px';
+    field.style.top = '0';
+    document.body.appendChild(field);
+    const previousFocus = document.activeElement;
+    field.focus();
+    field.select();
+    let succeeded = false;
+    try { succeeded = document.execCommand('copy'); } catch (_) { /* Browser blocked copying. */ }
+    field.remove();
+    if (previousFocus && typeof previousFocus.focus === 'function') previousFocus.focus({ preventScroll: true });
+    return succeeded;
+  }
+
+  async function copyHearts() {
+    let copied = false;
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        copied = true;
+      } catch (_) { /* Fall back for local files and clipboard permissions. */ }
+    }
+    if (!copied) copied = legacyCopy(textToCopy);
+    showFeedback(copied ? 'Copied! ✓' : 'Copy unavailable');
+  }
+
+  // Triple-click anywhere on the three hearts. Native text selection is suppressed.
+  hearts.addEventListener('mousedown', event => {
+    if (event.detail >= 3) event.preventDefault();
+  });
+  hearts.addEventListener('click', event => {
+    if (event.detail === 3 || event.detail === 0) copyHearts();
+  });
 })();
 </script>
 </body></html>
