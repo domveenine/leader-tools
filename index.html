@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#0b1423"><title>Leader Tools</title><style>
+  .unc-widget {
+    --unc-navy: #173570;
+    --unc-blue: #3059ab;
+    --unc-text: #27354c;
+    --unc-muted: #64728b;
+    --unc-border: #dce4f0;
+    width: 100%; max-width: 780px; box-sizing: border-box;
+    container-type: inline-size; overflow: hidden;
+    background: #fff; border: 1px solid var(--unc-border);
+    border-radius: 14px; box-shadow: 0 4px 18px rgba(26,48,90,.055);
+    color: var(--unc-text);
+    font: 14px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  }
+  .unc-widget *, .unc-widget *::before, .unc-widget *::after { box-sizing: border-box; }
+  .unc-widget .unc-accent { height: 4px; background: linear-gradient(to right, #3155b2 0 67%, #dc4755 67% 86%, #f0c13b 86% 100%); }
+  .unc-widget .unc-content { padding: 20px 22px 22px; }
+  .unc-widget .unc-heading { display: flex; align-items: center; gap: 11px; margin-bottom: 18px; }
+  .unc-widget .unc-heading-icon { display: grid; place-items: center; width: 34px; height: 34px; flex: 0 0 34px; border-radius: 9px; background: #edf2fc; color: var(--unc-navy); }
+  .unc-widget .unc-heading h2 { margin: 0; color: #1b3159; font-size: 19px; font-weight: 750; letter-spacing: -.025em; line-height: 1.25; }
+  .unc-widget .unc-heading-sub { margin: 2px 0 0; font-size: 11px; color: var(--unc-muted); }
+  .unc-widget .unc-section-label { margin: 0 0 10px; color: #72829b; font-size: 10px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+  .unc-widget .unc-fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+  .unc-widget .unc-field { display: flex; flex-direction: column; min-width: 0; gap: 6px; color: #394860; font-size: 12px; font-weight: 690; }
+  .unc-widget .unc-input { width: 100%; min-width: 0; height: 43px; border: 1px solid #cbd6e6; border-radius: 8px; padding: 8px 11px; background: #fff; color: #1d2e4b; outline: 0; font: 600 14px/1.25 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; font-variant-numeric: tabular-nums; }
+  .unc-widget .unc-input:focus { border-color: #5274c4; outline: 3px solid #dce7ff; outline-offset: 0; }
+  .unc-widget .unc-input[aria-invalid="true"] { border-color: #d96270; }
+  .unc-widget .unc-hint { font-size: 10px; font-weight: 470; color: #7b889a; }
+  .unc-widget .unc-note { padding: 9px 11px; margin: 13px 0 0; border: 1px solid #efc4cd; border-radius: 8px; background: #fff3f5; color: #943c50; font-size: 12px; }
+  .unc-widget .unc-note[hidden] { display: none; }
+  .unc-widget .unc-rule { margin: 19px 0 16px; height: 1px; background: #e7ecf5; }
+  .unc-widget .unc-results { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+  .unc-widget .unc-result-card { border: 1px solid #dae5f5; background: #f3f7fe; border-radius: 10px; padding: 14px 15px; min-width: 0; }
+  .unc-widget .unc-result-card.unc-featured { border-color: #c8d7f3; background: #edf3ff; }
+  .unc-widget .unc-result-label { color: #566987; font-size: 11px; font-weight: 760; letter-spacing: .035em; text-transform: uppercase; }
+  .unc-widget .unc-result-value { color: #1c3f7c; font-size: 30px; line-height: 1.25; font-weight: 830; letter-spacing: -.035em; margin-top: 4px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .unc-widget .unc-result-sub { margin-top: 4px; color: #7a8da8; font-size: 11px; }
+  .unc-widget .unc-featured .unc-result-value { color: #234fa1; }
+  .unc-widget .unc-detail-list { margin-top: 12px; border-radius: 10px; border: 1px solid #e2e9f4; overflow: hidden; }
+  .unc-widget .unc-detail { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 11px 14px; background: #fff; }
+  .unc-widget .unc-detail + .unc-detail { border-top: 1px solid #ecf0f6; }
+  .unc-widget .unc-detail-name { color: #586984; font-size: 12px; }
+  .unc-widget .unc-detail-amount { color: #253c65; font-size: 14px; font-weight: 770; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .unc-widget .unc-warning { margin: 10px 0 0; font-size: 11px; color: #a14b37; }
+  .unc-widget .unc-warning[hidden] { display: none; }
+  @container (max-width: 500px) {
+    .unc-widget .unc-content { padding: 17px 15px 18px; }
+    .unc-widget .unc-result-value { font-size: 25px; }
+  }
+  @container (max-width: 345px) {
+    .unc-widget .unc-fields, .unc-widget .unc-results { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .unc-widget .unc-input { transition: border-color .16s, outline-color .16s; }
+  }
+
+
+  .pec-widget {
+    --pec-navy: #173570;
+    --pec-blue: #3059ab;
+    --pec-text: #27354c;
+    --pec-muted: #64728b;
+    --pec-outline: #dce4f0;
+    box-sizing: border-box;
+    container-type: inline-size;
+    width: 100%;
+    max-width: 780px;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--pec-outline);
+    border-radius: 14px;
+    box-shadow: 0 4px 18px rgba(26, 48, 90, .055);
+    font: 14px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    color: var(--pec-text);
+  }
+  .pec-widget *, .pec-widget *::before, .pec-widget *::after { box-sizing: border-box; }
+  .pec-widget .pec-accent {
+    height: 4px;
+    background: linear-gradient(to right, #3155b2 0 67%, #dc4755 67% 86%, #f0c13b 86% 100%);
+  }
+  .pec-widget .pec-content { padding: 20px 22px 22px; }
+  .pec-widget .pec-heading {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 19px;
+  }
+  .pec-widget .pec-heading-icon {
+    display: grid; place-items: center; width: 33px; height: 33px; flex: 0 0 33px;
+    border-radius: 9px; background: #edf2fc; color: var(--pec-navy);
+  }
+  .pec-widget .pec-heading h2 {
+    margin: 0; color: #1b3159; font-size: 19px; font-weight: 750;
+    line-height: 1.25; letter-spacing: -.025em;
+  }
+  .pec-widget .pec-fields {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
+  }
+  .pec-widget .pec-field {
+    display: flex; flex-direction: column; min-width: 0; gap: 7px;
+    color: #394860; font-size: 12px; font-weight: 690;
+  }
+  .pec-widget .pec-date {
+    display: block; width: 100%; min-width: 0; height: 43px;
+    padding: 8px 10px; border: 1px solid #cbd6e6; border-radius: 8px;
+    font: 500 13px/1.3 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: #fff; color: #1d2e4b; color-scheme: light;
+  }
+  .pec-widget .pec-date:focus { border-color: #5274c4; outline: 3px solid #dce7ff; outline-offset: 0; }
+  .pec-widget .pec-actions {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 16px 0;
+  }
+  .pec-widget .pec-button {
+    min-height: 36px; padding: 8px 15px; border: 1px solid var(--pec-blue);
+    border-radius: 8px; background: var(--pec-blue); color: #fff;
+    font: 700 12px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    cursor: pointer;
+  }
+  .pec-widget .pec-button:hover { background: #244989; }
+  .pec-widget .pec-button:focus-visible, .pec-widget .pec-clear:focus-visible {
+    outline: 3px solid #a9c3ff; outline-offset: 2px;
+  }
+  .pec-widget .pec-clear {
+    padding: 8px 4px; border: 0; background: transparent; color: var(--pec-muted);
+    font: 650 12px/1.2 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    cursor: pointer;
+  }
+  .pec-widget .pec-clear:hover { text-decoration: underline; }
+  .pec-widget .pec-error {
+    margin: 12px 0 0; padding: 9px 11px; border: 1px solid #efc4cd;
+    border-radius: 8px; background: #fff3f5; color: #9c3d51; font-size: 12px;
+  }
+  .pec-widget .pec-error[hidden] { display: none; }
+  .pec-widget .pec-result {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 18px; padding: 17px 18px; border-radius: 10px;
+    background: #f0f5fd; border: 1px solid #dce7f9;
+  }
+  .pec-widget .pec-result-label {
+    margin-bottom: 4px; color: #566986; font-size: 11px; font-weight: 750;
+    text-transform: uppercase; letter-spacing: .045em;
+  }
+  .pec-widget .pec-result-date {
+    color: #19396e; font-size: 23px; font-weight: 800; line-height: 1.2;
+    letter-spacing: -.025em; overflow-wrap: anywhere;
+  }
+  .pec-widget .pec-result-day { color: #697a96; font-size: 11px; margin-top: 3px; min-height: 15px; }
+  .pec-widget .pec-days-block {
+    flex: 0 0 auto; min-width: 115px; padding-left: 18px;
+    border-left: 1px solid #ccdbf1;
+  }
+  .pec-widget .pec-days-count { color: #19396e; font-size: 25px; font-weight: 800; line-height: 1.15; }
+  .pec-widget .pec-days-caption { margin-top: 4px; color: #566986; font-size: 11px; }
+  @container (max-width: 580px) {
+    .pec-widget .pec-fields { grid-template-columns: 1fr; gap: 13px; }
+    .pec-widget .pec-heading h2 { font-size: 17px; }
+    .pec-widget .pec-content { padding: 17px 16px 18px; }
+    .pec-widget .pec-result { padding: 15px; }
+    .pec-widget .pec-result-date { font-size: 19px; }
+    .pec-widget .pec-days-block { min-width: 95px; padding-left: 12px; }
+  }
+  @container (max-width: 360px) {
+    .pec-widget .pec-result { align-items: flex-start; flex-direction: column; gap: 10px; }
+    .pec-widget .pec-days-block { padding: 10px 0 0; border-left: 0; border-top: 1px solid #ccdbf1; width: 100%; }
+  }
+  @media print { .pec-widget { box-shadow: none; } .pec-widget .pec-actions { display: none; } }
+
+
+    /* Scoped module styles to avoid interfering with an existing page. */
+    #seconds-to-minutes-calculator {
+      --stm-ink: #14253f;
+      --stm-muted: #68768b;
+      --stm-border: #dde5ef;
+      --stm-bg: #ffffff;
+      --stm-panel: #f5f8fc;
+      --stm-blue: #214e95;
+      width: 100%;
+      max-width: 360px;
+      box-sizing: border-box;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      color: var(--stm-ink);
+      background: var(--stm-bg);
+      border: 1px solid var(--stm-border);
+      border-radius: 13px;
+      overflow: hidden;
+      box-shadow: 0 7px 28px rgba(20, 43, 75, .07);
+    }
+    #seconds-to-minutes-calculator *,
+    #seconds-to-minutes-calculator *::before,
+    #seconds-to-minutes-calculator *::after { box-sizing: border-box; }
+    #seconds-to-minutes-calculator .stm-accent {
+      height: 4px;
+      background: linear-gradient(90deg, #214e95 0%, #214e95 56%, #d72b41 56%, #d72b41 78%, #f6b723 78%, #f6b723 100%);
+    }
+    #seconds-to-minutes-calculator .stm-content { padding: 17px; }
+    #seconds-to-minutes-calculator h2 {
+      margin: 0 0 13px;
+      color: var(--stm-ink);
+      font-size: 17px;
+      font-weight: 750;
+      letter-spacing: -.35px;
+      line-height: 1.3;
+    }
+    #seconds-to-minutes-calculator label {
+      display: block;
+      font-size: 12px;
+      font-weight: 650;
+      margin-bottom: 6px;
+    }
+    #seconds-to-minutes-calculator .stm-field { position: relative; }
+    #seconds-to-minutes-calculator input {
+      appearance: textfield;
+      -moz-appearance: textfield;
+      width: 100%;
+      min-height: 43px;
+      padding: 8px 83px 8px 12px;
+      border: 1.5px solid #d2ddeb;
+      border-radius: 8px;
+      outline: none;
+      background: #fff;
+      color: var(--stm-ink);
+      font-family: inherit;
+      font-size: 18px;
+      font-weight: 650;
+      font-variant-numeric: tabular-nums;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    #seconds-to-minutes-calculator input::-webkit-inner-spin-button,
+    #seconds-to-minutes-calculator input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    #seconds-to-minutes-calculator input:focus {
+      border-color: #4277c4;
+      box-shadow: 0 0 0 3px rgba(66, 119, 196, .13);
+    }
+    #seconds-to-minutes-calculator input[aria-invalid="true"] {
+      border-color: #c13b4b;
+    }
+    #seconds-to-minutes-calculator .stm-unit {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      color: var(--stm-muted);
+      font-size: 12px;
+      font-weight: 600;
+      pointer-events: none;
+    }
+    #seconds-to-minutes-calculator .stm-error {
+      min-height: 0;
+      margin: 0;
+      color: #b02e40;
+      font-size: 12px;
+    }
+    #seconds-to-minutes-calculator .stm-error:not(:empty) { margin: 6px 0 0; }
+    #seconds-to-minutes-calculator .stm-results {
+      display: grid;
+      grid-template-columns: 1fr;
+      margin-top: 11px;
+    }
+    #seconds-to-minutes-calculator .stm-result {
+      border: 1px solid #e6edf5;
+      border-radius: 9px;
+      background: var(--stm-panel);
+      padding: 11px 12px;
+      min-width: 0;
+    }
+    #seconds-to-minutes-calculator .stm-result-primary {
+      background: #eef4fe;
+      border-color: #dce7f9;
+    }
+    #seconds-to-minutes-calculator .stm-result-label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--stm-muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+    #seconds-to-minutes-calculator output {
+      display: block;
+      min-width: 0;
+      color: var(--stm-ink);
+      font-size: 23px;
+      font-weight: 750;
+      letter-spacing: -.6px;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+      font-variant-numeric: tabular-nums;
+    }
+    #seconds-to-minutes-calculator .stm-result-primary output { color: var(--stm-blue); }
+    @media (max-width: 370px) {
+      #seconds-to-minutes-calculator .stm-content { padding: 14px; }
+    }
+  
+
+/* User-selectable dark mode. The original light palette remains intact. */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --ink:#e8effd; --muted:#a5b5ce; --brand:#9ec5ff; --border:#31415c; --canvas:#0b1220;
+}
+html[data-theme="dark"] body {
+  color:#e8effd;
+  background:radial-gradient(ellipse 1100px 650px at 28% -240px, #20385c 0, #10192a 54%, #0b1220 100%);
+}
+html[data-theme="dark"] .logo{background:linear-gradient(150deg,#254f9a,#3577c7);box-shadow:0 8px 23px #030a1640}
+html[data-theme="dark"] h1{color:#f1f6ff}
+html[data-theme="dark"] .eyebrow{color:#90a5c3}
+html[data-theme="dark"] .chip{background:#1a2a43;border-color:#324561;color:#b5c7e0}
+html[data-theme="dark"] .help-row{color:#a4b6d0}
+html[data-theme="dark"] .help-row svg{color:#90baff}
+html[data-theme="dark"] .btn-settings{background:#1b2b43;border-color:#3c5377;color:#d4e6ff;box-shadow:0 2px 10px #02071424}
+html[data-theme="dark"] .btn-settings:hover,
+html[data-theme="dark"] .btn-settings[aria-expanded="true"]{background:#253b5d;border-color:#6594d7}
+html[data-theme="dark"] .settings{background:#17243a;border-color:#334763;box-shadow:0 16px 38px #0208165c}
+html[data-theme="dark"] .settings-title h2{color:#f2f6ff}
+html[data-theme="dark"] .settings-title p{color:#abbcd4}
+html[data-theme="dark"] .close-settings{background:#263751;color:#c3d4ed}
+html[data-theme="dark"] .close-settings:hover{background:#374f71}
+html[data-theme="dark"] .setting-label{color:#9fb4d4}
+html[data-theme="dark"] .segment{background:#101c2e;border-color:#354760}
+html[data-theme="dark"] .segment button{color:#aebed4}
+html[data-theme="dark"] .segment button:hover{color:#dcecff}
+html[data-theme="dark"] .segment button[aria-pressed="true"]{background:#335887;color:#fff;box-shadow:0 1px 7px #06101f69}
+html[data-theme="dark"] .settings-divider{border-color:#30435f}
+html[data-theme="dark"] .checkgroup label{color:#d1ddef}
+html[data-theme="dark"] .checkgroup input{accent-color:#6199ee}
+html[data-theme="dark"] .btn-reset{background:#202f48;color:#d7e6f9;border-color:#3a4b67}
+html[data-theme="dark"] .btn-reset:hover{background:#304764}
+html[data-theme="dark"] .lane:empty::before{color:#8fa7c9;background:#15243a80;border-color:#496081}
+html[data-theme="dark"] .wide-zone.drag-zone:empty{background:#24446a40;border-color:#5c87be}
+html[data-theme="dark"] .wide-zone.drag-zone:empty::before{color:#b9d3f5}
+html[data-theme="dark"] .lane.drop-hot,
+html[data-theme="dark"] .wide-zone.drop-hot{background:#2d51874d;outline-color:#87adf5}
+html[data-theme="dark"] .panel-toolbar{background:#1b2a40;border-color:#334662}
+html[data-theme="dark"] .grab{color:#a7b8d2}
+html[data-theme="dark"] .grab:hover{color:#e5f2ff}
+html[data-theme="dark"] .card-more{color:#b2c5df}
+html[data-theme="dark"] .card-more:hover,
+html[data-theme="dark"] .card-more[aria-expanded="true"]{color:#f0f6ff;background:#304766;border-color:#506d93}
+html[data-theme="dark"] .card-menu{background:#1e2d44;border-color:#425775;box-shadow:0 18px 45px #020714a8}
+html[data-theme="dark"] .card-menu button{background:#1e2d44;color:#e4ecf9}
+html[data-theme="dark"] .card-menu button:hover:not(:disabled){background:#314967;color:#fff}
+html[data-theme="dark"] .card-menu button:disabled{color:#7586a0}
+html[data-theme="dark"] .card-menu .menu-line{border-color:#3c4e66}
+html[data-theme="dark"] .card-menu .danger{color:#ffb2bc}
+html[data-theme="dark"] .card-menu .danger:hover{background:#56303e;color:#ffd4db}
+html[data-theme="dark"] .panel>.unc-widget,
+html[data-theme="dark"] .panel>.pec-widget,
+html[data-theme="dark"] .panel>#seconds-to-minutes-calculator{border-color:#334662;box-shadow:0 9px 23px #02071552}
+html[data-theme="dark"] .placeholder{background:#1b355a;border-color:#87afea;color:#d2e5ff}
+html[data-theme="dark"] .footer{color:#91a5bf}
+html[data-theme="dark"] .footer strong{color:#b9cbe4}
+/* Unavailable / Non-Ready (UNR) calculator. */
+html[data-theme="dark"] .unc-widget{
+  --unc-navy:#b5d0ff;--unc-blue:#82b0ff;--unc-text:#eaf1ff;--unc-muted:#9eb1ce;--unc-border:#334762;
+  background:#17243a;color:var(--unc-text);box-shadow:0 4px 18px #0107133d;
+}
+html[data-theme="dark"] .unc-widget .unc-heading-icon{background:#293f60;color:#bad6ff}
+html[data-theme="dark"] .unc-widget .unc-heading h2{color:#edf5ff}
+html[data-theme="dark"] .unc-widget .unc-section-label{color:#a4bad9}
+html[data-theme="dark"] .unc-widget .unc-field{color:#d3e0f1}
+html[data-theme="dark"] .unc-widget .unc-input{background:#0f1b2e;border-color:#435875;color:#f3f7ff;caret-color:#bad7ff;color-scheme:dark}
+html[data-theme="dark"] .unc-widget .unc-input:focus{border-color:#85b2ff;outline-color:#354f76}
+html[data-theme="dark"] .unc-widget .unc-input::placeholder{color:#7c91ad}
+html[data-theme="dark"] .unc-widget .unc-hint{color:#9db2cc}
+html[data-theme="dark"] .unc-widget .unc-note{background:#402837;border-color:#874656;color:#ffd7df}
+html[data-theme="dark"] .unc-widget .unc-rule{background:#354661}
+html[data-theme="dark"] .unc-widget .unc-result-card{background:#1b2f4a;border-color:#395474}
+html[data-theme="dark"] .unc-widget .unc-result-card.unc-featured{background:#20385c;border-color:#5579aa}
+html[data-theme="dark"] .unc-widget .unc-result-label{color:#adc4e2}
+html[data-theme="dark"] .unc-widget .unc-result-value,
+html[data-theme="dark"] .unc-widget .unc-featured .unc-result-value{color:#a9ceff}
+html[data-theme="dark"] .unc-widget .unc-result-sub{color:#a4b8d4}
+html[data-theme="dark"] .unc-widget .unc-detail-list{border-color:#364c69}
+html[data-theme="dark"] .unc-widget .unc-detail{background:#192a42}
+html[data-theme="dark"] .unc-widget .unc-detail+.unc-detail{border-color:#334862}
+html[data-theme="dark"] .unc-widget .unc-detail-name{color:#b7c9e3}
+html[data-theme="dark"] .unc-widget .unc-detail-amount{color:#e7f0ff}
+html[data-theme="dark"] .unc-widget .unc-warning{color:#ffb8a0}
+/* Probation extension calculator. */
+html[data-theme="dark"] .pec-widget{
+  --pec-navy:#b7d3ff;--pec-blue:#365fa9;--pec-text:#edf4ff;--pec-muted:#a9bbd3;--pec-outline:#334762;
+  background:#17243a;color:var(--pec-text);box-shadow:0 4px 18px #0107133d;
+}
+html[data-theme="dark"] .pec-widget .pec-heading-icon{background:#293f60;color:#bad6ff}
+html[data-theme="dark"] .pec-widget .pec-heading h2{color:#edf5ff}
+html[data-theme="dark"] .pec-widget .pec-field{color:#d1ddf0}
+html[data-theme="dark"] .pec-widget .pec-date{background:#0f1b2e;border-color:#435875;color:#f3f7ff;color-scheme:dark}
+html[data-theme="dark"] .pec-widget .pec-date:focus{border-color:#85b2ff;outline-color:#354f76}
+html[data-theme="dark"] .pec-widget .pec-button{background:#3568b8;border-color:#6092d9;color:#fff}
+html[data-theme="dark"] .pec-widget .pec-button:hover{background:#457bc8}
+html[data-theme="dark"] .pec-widget .pec-clear{color:#b0c3e0}
+html[data-theme="dark"] .pec-widget .pec-error{background:#402837;border-color:#874656;color:#ffd7df}
+html[data-theme="dark"] .pec-widget .pec-result{background:#203651;border-color:#405f84}
+html[data-theme="dark"] .pec-widget .pec-result-label{color:#b9cde8}
+html[data-theme="dark"] .pec-widget .pec-result-date,
+html[data-theme="dark"] .pec-widget .pec-days-count{color:#c4dcff}
+html[data-theme="dark"] .pec-widget .pec-result-day{color:#a7bbd9}
+html[data-theme="dark"] .pec-widget .pec-days-block{border-color:#4b6790}
+html[data-theme="dark"] .pec-widget .pec-days-caption{color:#b4c8e4}
+/* Compact seconds/minutes calculator. */
+html[data-theme="dark"] #seconds-to-minutes-calculator{
+  --stm-ink:#edf4ff;--stm-muted:#b1c3dd;--stm-border:#334762;--stm-bg:#17243a;--stm-panel:#1b304b;--stm-blue:#aad0ff;
+  background:var(--stm-bg);color:var(--stm-ink);box-shadow:0 7px 28px #01071347;
+}
+html[data-theme="dark"] .panel #seconds-to-minutes-calculator h2{color:#edf5ff}
+html[data-theme="dark"] #seconds-to-minutes-calculator input{background:#0f1b2e;border-color:#435875;color:#f2f7ff;color-scheme:dark;caret-color:#bad7ff}
+html[data-theme="dark"] #seconds-to-minutes-calculator input:focus{border-color:#85b2ff;box-shadow:0 0 0 3px #4777b647}
+html[data-theme="dark"] #seconds-to-minutes-calculator input::placeholder{color:#849ab6}
+html[data-theme="dark"] #seconds-to-minutes-calculator .stm-result{background:#1b304b;border-color:#3b5273}
+html[data-theme="dark"] #seconds-to-minutes-calculator .stm-result-primary{background:#213b5e;border-color:#52729e}
+html[data-theme="dark"] #seconds-to-minutes-calculator .stm-result-primary output{color:#a9d0ff}
+html[data-theme="dark"] #seconds-to-minutes-calculator .stm-error{color:#ffabb8}
+@media print { html[data-theme="dark"] body {background:#fff} }
+
+
+/* Zulu conversion card inherits the existing dashboard theme, layout, and density. */
+.zulu-widget{
+  --z-bg:#fff;--z-ink:#223a62;--z-muted:#73849e;--z-field:#fff;
+  --z-border:#dce5f1;--z-panel:#edf3ff;--z-strong:#254f93;--z-hint:#627792;
+  background:var(--z-bg);border:1px solid var(--z-border);color:var(--z-ink);
+  border-radius:0 0 14px 14px;overflow:hidden;font-size:13px;
+  box-shadow:0 5px 17px #152b540a;
+}
+.zulu-widget *{box-sizing:border-box}
+.zulu-accent{height:4px;background:linear-gradient(90deg,#3155b2 0 67%,#dc4755 67% 86%,#f0c13b 86%)}
+.zulu-content{padding:20px 22px 22px}
+.zulu-head{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.zulu-icon{display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;border-radius:9px;background:var(--z-panel);color:var(--z-strong)}
+.zulu-head h2{margin:0;color:var(--z-ink);font-size:18px;font-weight:750;letter-spacing:-.025em;line-height:1.2}
+.zulu-subtitle{margin:4px 0 0;font-size:11px;color:var(--z-muted)}
+.zulu-fields{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:11px}
+.zulu-field{display:flex;flex-direction:column;gap:6px;min-width:0;font-size:12px;font-weight:700;color:var(--z-ink)}
+.zulu-field input,.zulu-field select{height:43px;min-width:0;width:100%;border:1px solid var(--z-border);border-radius:8px;padding:8px 11px;background:var(--z-field);color:var(--z-ink);font:650 14px/1.25 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-variant-numeric:tabular-nums}
+.zulu-field input:focus,.zulu-field select:focus{outline:3px solid #7fa8e55c;outline-offset:0;border-color:#679adf}
+.zulu-field input[aria-invalid="true"]{border-color:#d85e75}
+.zulu-field input::placeholder{color:#8896a8;font-weight:450}
+.zulu-field .zulu-hint{color:var(--z-muted);font-weight:470;font-size:10px}
+.zulu-field-wide{grid-column:1/-1}
+.zulu-result{margin-top:16px;padding:14px 16px;border:1px solid #ccdcf3;border-radius:10px;background:var(--z-panel);min-height:112px}
+.zulu-result-label{font-size:10px;text-transform:uppercase;letter-spacing:.065em;font-weight:800;color:var(--z-hint)}
+.zulu-result-time{display:block;margin-top:3px;font-size:clamp(25px,3vw,34px);font-weight:820;line-height:1.28;letter-spacing:-.04em;color:var(--z-strong);font-variant-numeric:tabular-nums}
+.zulu-result-date{margin-top:4px;color:var(--z-ink);font-size:12px;font-weight:600}
+.zulu-result-detail{font-size:11px;color:var(--z-muted);margin-top:4px}
+.zulu-error{margin:9px 0 0;color:#b4495e;font-size:11px;font-weight:600}
+.zulu-error[hidden]{display:none}
+.zulu-foot{font-size:10px;margin:11px 0 0;color:var(--z-muted);line-height:1.5}
+.board[data-density="compact"] .zulu-content{padding:13px 16px 15px}
+.board[data-density="compact"] .zulu-head{margin-bottom:12px}
+.board[data-density="compact"] .zulu-result{margin-top:12px;padding:12px 13px}
+html[data-theme="dark"] .zulu-widget{
+  --z-bg:#17243a;--z-ink:#edf4ff;--z-muted:#a7bdd8;--z-field:#0f1b2e;
+  --z-border:#344967;--z-panel:#213853;--z-strong:#b2d4ff;--z-hint:#b4c9e6;
+  box-shadow:0 9px 23px #02071552;
+}
+html[data-theme="dark"] .zulu-field input,html[data-theme="dark"] .zulu-field select{border-color:#435875;color-scheme:dark}
+html[data-theme="dark"] .zulu-result{border-color:#456389}
+html[data-theme="dark"] .zulu-error{color:#ffacba}
+@media(max-width:400px){.zulu-fields{grid-template-columns:minmax(0,1fr)}.zulu-field-wide{grid-column:auto}}
+@media print{.zulu-widget{border-radius:12px;box-shadow:none}}
+</style><style> 
+:root {color-scheme: dark; --bg:#0b1423; --surface:#142238; --surface2:#1b2d46; --line:#314560; --text:#edf3fb; --muted:#9fb2ce; --blue:#8bbaff;}
+html[data-theme="dark"] {color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html {min-width:310px}
+body {margin:0;min-height:100vh;background:radial-gradient(ellipse 950px 330px at 30% -260px,#2f4c70 0%,transparent 90%),var(--bg);color:var(--text);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,select{font:inherit}
+button {cursor:pointer}
+.brandline {height:4px;background:linear-gradient(90deg,#335ab6 0 69%,#e44760 69% 87%,#f5ca47 87%)}
+.shell {width:100%;max-width:2100px;margin:0 auto;padding:26px clamp(16px,2.1vw,40px) 50px}
+header.page-header {display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:24px}
+.eyebrow {font-size:10px;font-weight:800;letter-spacing:.14em;color:#90aad1;text-transform:uppercase;margin:0 0 4px}
+h1 {font-size:clamp(25px,2.4vw,34px);line-height:1.12;font-weight:780;letter-spacing:-.035em;margin:0}
+.page-subtitle{color:var(--muted);margin:7px 0 0;font-size:13px}
+.tools-section {background:linear-gradient(115deg,#192c46,#14243b 76%);border:1px solid var(--line);border-radius:15px;padding:16px;margin-bottom:20px;box-shadow:0 8px 26px #02081028}
+.tools-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.tools-heading h2{font-size:11px;font-weight:800;letter-spacing:.095em;text-transform:uppercase;color:#b9cbea;margin:0}
+.quick-actions{display:flex;align-items:center;gap:8px}
+.text-action{border:0;background:transparent;color:#b1c7e8;padding:5px 7px;border-radius:6px;font-weight:650;font-size:12px}
+.text-action:hover,.text-action:focus-visible{color:#fff;background:#2a4262;outline:none}
+.text-action:focus-visible{outline:2px solid #88b7ff;outline-offset:2px}
+.tool-buttons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.tool-toggle{min-width:0;display:flex;align-items:center;gap:10px;min-height:60px;padding:10px 12px;background:#101c30;border:1px solid #334964;border-radius:10px;color:#bed0e9;text-align:left;transition:background .12s,border-color .12s}
+.tool-toggle:hover{background:#213752;border-color:#617da4}
+.tool-toggle[aria-pressed="true"]{background:#264469;border-color:#648fc9;color:#fff;box-shadow:inset 0 0 0 1px #4b78b655}
+.tool-toggle:focus-visible{outline:3px solid #8bbaff;outline-offset:2px}
+.tool-icon{display:grid;place-items:center;flex:0 0 35px;width:35px;height:35px;color:#9fc5ff;background:#1f3552;border-radius:9px}
+.tool-toggle[aria-pressed="true"] .tool-icon{background:#355d8d;color:#fff}
+.tool-name{font-size:13px;font-weight:750;line-height:1.2;overflow-wrap:anywhere}
+.tool-label{display:flex;min-width:0;flex-direction:column;gap:2px}
+.tool-desc{font-size:10px;color:#92a9c9;font-weight:450}
+.tool-toggle[aria-pressed="true"] .tool-desc{color:#c2d6f3}
+.tool-indicator{margin-left:auto;flex:none;width:7px;height:7px;background:#536b8a;border-radius:100%}
+.tool-toggle[aria-pressed="true"] .tool-indicator{background:#8cc3ff;box-shadow:0 0 0 3px #8cc3ff22}
+.workspace{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;align-items:start}
+.tool-card{min-width:0;border:1px solid #304864;border-radius:14px;overflow:hidden;background:#17243a;box-shadow:0 10px 25px #01081624}
+/* Southwest blue, red and yellow accent at the very top of every calculator. */
+.tool-card::before{content:"";display:block;height:5px;width:100%;background:linear-gradient(90deg,#335ab6 0 69%,#e44760 69% 87%,#f5ca47 87% 100%)}
+.tool-card[hidden],.empty-state[hidden]{display:none!important}
+.card-bar{min-height:62px;display:flex;gap:10px;align-items:center;padding:14px 16px;background:linear-gradient(90deg,#1e3653,#1a2c46);border-bottom:1px solid #2f4562}
+.card-mark{height:34px;width:34px;flex:0 0 34px;display:grid;place-items:center;background:#2b4b70;color:#b5d4ff;border-radius:9px}
+.card-title{min-width:0;flex:1}
+.card-title h2{font-size:15px;line-height:1.25;font-weight:770;letter-spacing:-.015em;margin:0;color:#f2f6ff}
+.card-title p{font-size:11px;margin:3px 0 0;color:#9db4d4}
+.close-card{border:0;color:#b1c6e6;background:transparent;display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:8px;font-size:22px;line-height:1}
+.close-card:hover{background:#304e73;color:#fff}
+.close-card:focus-visible{outline:2px solid #8bbaff}
+.empty-state{grid-column:1/-1;min-height:180px;padding:35px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px dashed #3c5471;border-radius:14px;color:#b1c6df;text-align:center;background:#122036}
+.empty-state strong{font-size:16px;color:#dceafa}
+.empty-state span{font-size:13px;margin-top:5px}
+.tool-card>.unc-widget,.tool-card>.pec-widget,.tool-card>#seconds-to-minutes-calculator,.tool-card>.zulu-widget{width:100%;max-width:none;margin:0;border:0;border-radius:0;box-shadow:none;min-width:0;overflow:hidden}
+.tool-card .unc-heading,.tool-card .pec-heading,.tool-card #seconds-to-minutes-calculator h2,.tool-card .zulu-head{display:none}
+.tool-card .unc-accent,.tool-card .pec-accent,.tool-card .stm-accent,.tool-card .zulu-accent{display:none}
+.tool-card .unc-content,.tool-card .pec-content,.tool-card #seconds-to-minutes-calculator .stm-content,.tool-card .zulu-content{padding:17px 17px 19px}
+.tool-card .unc-widget,.tool-card .pec-widget,.tool-card #seconds-to-minutes-calculator,.tool-card .zulu-widget{background:#17243a}
+.tool-card #seconds-to-minutes-calculator .stm-results{margin-top:12px}
+.tool-card .unc-widget .unc-fields{gap:10px}
+.tool-card .unc-widget .unc-rule{margin:16px 0 14px}
+.tool-card .unc-widget .unc-results{gap:10px}
+.tool-card .unc-widget .unc-result-card{padding:12px 11px}
+.tool-card .unc-widget .unc-result-value{font-size:clamp(21px,2vw,27px)}
+.tool-card .zulu-result{margin-top:12px}
+.tool-card .zulu-result-time{font-size:clamp(26px,2.3vw,34px)}
+.tool-card .pec-fields{gap:11px}
+.tool-card .pec-actions{margin-top:14px}
+@media(max-width:1200px){.workspace{grid-template-columns:repeat(2,minmax(0,1fr))}.tool-buttons{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:760px){.workspace{grid-template-columns:1fr}.tool-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}.shell{padding:18px 14px 32px}.page-subtitle{font-size:12px}}
+@media(max-width:410px){.tool-toggle{padding:9px 10px;min-height:58px;gap:7px}.tool-icon{width:30px;height:30px;flex-basis:30px}.tool-name{font-size:12px}.tool-desc{display:none}.tools-section{padding:12px}.workspace{gap:12px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+
+/* Simple two-column leader dashboard. */
+.workspace {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:16px}
+.tool-card {min-width:0}
+.tool-card.is-collapsed>.unc-widget,.tool-card.is-collapsed>.pec-widget,
+.tool-card.is-collapsed>.zulu-widget,.tool-card.is-collapsed>#seconds-to-minutes-calculator {display:none!important}
+.tool-card.is-collapsed .card-bar {border-bottom:0}
+.page-header {margin-bottom:18px!important}
+.page-subtitle {font-size:12px;color:#9fb2ce;margin-top:7px}
+.display-actions{display:flex;gap:9px;flex-wrap:wrap}
+.display-btn{background:#1c304b;color:#dceaff;border:1px solid #405b7b;border-radius:9px;padding:9px 14px;font-size:12px;font-weight:700;white-space:nowrap}
+.display-btn:hover{background:#2a4567;border-color:#7296c8}
+.display-btn:focus-visible,.card-toggle:focus-visible,.move-card:focus-visible{outline:2px solid #9bc5ff;outline-offset:2px}
+.card-bar{padding:10px 12px;min-height:66px;gap:10px}
+.card-toggle {display:flex;align-items:center;gap:12px;min-width:0;flex:1;padding:3px 0;background:none;border:0;color:#f2f6ff;text-align:left;border-radius:7px}
+.card-toggle:hover .card-heading{color:#bcd7ff}
+.card-title{display:flex;min-width:0;flex:1;flex-direction:column;gap:3px}
+.card-heading{font-size:15px;line-height:1.22;font-weight:770;letter-spacing:-.015em}
+.card-subtitle{font-size:11px;line-height:1.25;color:#a6bddc}
+.card-chevron{flex:0 0 19px;transition:transform .17s;opacity:.8}
+.card-toggle[aria-expanded="false"] .card-chevron{transform:rotate(-90deg)}
+.move-controls{display:flex;align-items:center;flex:none;gap:5px;border-left:1px solid #38516d;padding-left:10px}
+.move-card{width:32px;height:32px;display:grid;place-items:center;background:#223c5e;border:1px solid #3a577b;color:#d0e0fa;border-radius:8px;padding:0}
+.move-card:hover{color:#fff;background:#34567e;border-color:#6d98c8}
+@media(max-width:710px){.workspace{grid-template-columns:minmax(0,1fr)}.shell{padding:16px 13px 30px}.page-header{gap:12px}}
+@media(max-width:450px){.workspace{gap:12px}.card-bar{padding:9px 10px;gap:7px}.card-toggle{gap:8px}.card-heading{font-size:13px}.card-subtitle{font-size:10px}.move-controls{gap:4px;padding-left:7px}.move-card{width:30px;height:30px}.card-mark{flex-basis:31px;width:31px;height:31px}.display-btn{padding:8px 12px}}
+</style></head>
+<body><div class="brandline" aria-hidden="true"></div>
+<main class="shell">
+<header class="page-header">
+  <div><h1>Leader Tools</h1><p class="page-subtitle">Click a calculator to expand it. Use the arrows to change its position.</p></div>
+  <div class="display-actions" aria-label="Calculator display">
+    <button type="button" class="display-btn" id="expand-all">Expand all</button>
+    <button type="button" class="display-btn" id="collapse-all">Collapse all</button>
+  </div>
+</header>
+<section class="workspace" id="workspace" aria-label="Open calculators"><article class="tool-card" id="panel-unr" data-tool="unr" aria-label="UNR Calculator"><div class="card-bar">
+ <button class="card-toggle" type="button" data-expand="unr" aria-controls="panel-unr-content" aria-expanded="true" title="Expand or collapse UNR Calculator">
+   <span class="card-mark"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 15v-4M13 15V7M18 15V10"/></svg></span>
+   <span class="card-title"><span class="card-heading">UNR Calculator</span><span class="card-subtitle">Unapproved/Not Ready time</span></span>
+   <svg class="card-chevron" aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+ </button>
+ <div class="move-controls" role="group" aria-label="Move UNR Calculator">
+   <button type="button" class="move-card" data-move="-1" aria-label="Move UNR Calculator left" title="Move one position left"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button>
+   <button type="button" class="move-card" data-move="1" aria-label="Move UNR Calculator right" title="Move one position right"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
+ </div>
+</div><section aria-label="Unavailable / Non-Ready Calculator" class="unc-widget" id="panel-unr-content">
+<div aria-hidden="true" class="unc-accent"></div>
+<div class="unc-content">
+<header class="unc-heading">
+<span aria-hidden="true" class="unc-heading-icon">
+<svg fill="none" height="21" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24" width="21"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3.2 1.8"></path></svg>
+</span>
+<div>
+<h2>UNR Calculator</h2>
+<p class="unc-heading-sub">Unavailable / Non-Ready</p>
+</div>
+</header>
+<p class="unc-section-label">Inputs</p>
+<div class="unc-fields">
+<label class="unc-field">Initial Login Time per shift
+        <input aria-describedby="unc-login-hint" autocomplete="off" class="unc-input" data-unc="login" inputmode="text" placeholder="0:09:59" spellcheck="false" type="text" value="0:09:59"/>
+<span class="unc-hint" id="unc-login-hint">H:MM:SS, allowed per shift</span>
+</label>
+<label class="unc-field">Days worked (shifts)
+        <input autocomplete="off" class="unc-input" data-unc="shifts" min="0" placeholder="0" step="1" type="number" value="16"/>
+<span class="unc-hint">Total shifts for the period</span>
+</label>
+<label class="unc-field">Actual UNR (month-end)
+        <input autocomplete="off" class="unc-input" data-unc="actual" inputmode="text" placeholder="5:24:00" spellcheck="false" type="text" value="5:24:00"/>
+<span class="unc-hint">H:MM:SS, total recorded UNR</span>
+</label>
+<label class="unc-field">Total hours worked
+        <input autocomplete="off" class="unc-input" data-unc="worked" inputmode="text" placeholder="146:58:00" spellcheck="false" type="text" value="146:58:00"/>
+<span class="unc-hint">H:MM:SS, total worked time</span>
+</label>
+</div>
+<p class="unc-note" data-unc="error" hidden="" role="alert"></p>
+<div aria-hidden="true" class="unc-rule"></div>
+<p class="unc-section-label">Calculated results</p>
+<div aria-atomic="false" aria-live="polite" class="unc-results">
+<div class="unc-result-card">
+<div class="unc-result-label">Gross UNR %</div>
+<div class="unc-result-value" data-unc="gross">3.67%</div>
+<div class="unc-result-sub">Before excused login time</div>
+</div>
+<div class="unc-result-card unc-featured">
+<div class="unc-result-label">Net UNR %</div>
+<div class="unc-result-value" data-unc="netPercent">1.86%</div>
+<div class="unc-result-sub">After excused login time</div>
+</div>
+</div>
+<div class="unc-detail-list">
+<div class="unc-detail">
+<span class="unc-detail-name">Initial Login Time total</span>
+<output class="unc-detail-amount" data-unc="excused">2:39:44</output>
+</div>
+<div class="unc-detail">
+<span class="unc-detail-name">Net UNR (after Initial Login Time)</span>
+<output class="unc-detail-amount" data-unc="netDuration">2:44:16</output>
+</div>
+</div>
+<p class="unc-warning" data-unc="warning" hidden=""></p>
+</div>
+</section><script>
+(function () {
+  'use strict';
+  var root = document.currentScript && document.currentScript.previousElementSibling;
+  if (!root || !root.classList.contains('unc-widget') || root.dataset.uncReady) return;
+  root.dataset.uncReady = 'true';
+  function el(name) { return root.querySelector('[data-unc="' + name + '"]'); }
+  var inputs = { login:el('login'), shifts:el('shifts'), actual:el('actual'), worked:el('worked') };
+  var names = ['login','shifts','actual','worked'];
+  var resultNames = ['gross','netPercent','excused','netDuration'];
+  var errorEl=el('error'), warningEl=el('warning');
+  // A period's total hours may exceed 24, so native <input type="time"> is not used.
+  function parseTime(s) {
+    var match = /^(\d+):([0-5]?\d)(?::([0-5]?\d))?$/.exec(String(s).trim());
+    if (!match) return null;
+    var h=Number(match[1]), m=Number(match[2]), sec=match[3]===undefined?0:Number(match[3]);
+    if (!Number.isSafeInteger(h) || h>1000000 || m>59 || sec>59) return null;
+    var value=h*3600+m*60+sec;
+    return Number.isSafeInteger(value)?value:null;
+  }
+  function fmtTime(s) {
+    if (!Number.isFinite(s)) return '—';
+    s=Math.round(s);
+    var negative = s<0; s=Math.abs(s);
+    var h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60;
+    return (negative?'-':'')+h+':'+String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0');
+  }
+  function fmtPercent(ratio) { return (ratio*100).toFixed(2)+'%'; }
+  function update() {
+    var login = parseTime(inputs.login.value);
+    var actual = parseTime(inputs.actual.value);
+    var worked = parseTime(inputs.worked.value);
+    var shiftText = inputs.shifts.value.trim();
+    var shifts = shiftText==='' ? null : Number(shiftText);
+    var validShifts = shifts!==null && Number.isSafeInteger(shifts) && shifts>=0 && shifts<=100000;
+    var problems=[];
+    if (inputs.login.value.trim() && login===null) problems.push('Initial Login Time');
+    if (shiftText && !validShifts) problems.push('Days worked');
+    if (inputs.actual.value.trim() && actual===null) problems.push('Actual UNR');
+    if (inputs.worked.value.trim() && (worked===null || worked===0)) problems.push('Total hours worked');
+    inputs.login.setAttribute('aria-invalid',String(!!inputs.login.value.trim() && login===null));
+    inputs.shifts.setAttribute('aria-invalid',String(!!shiftText && !validShifts));
+    inputs.actual.setAttribute('aria-invalid',String(!!inputs.actual.value.trim() && actual===null));
+    inputs.worked.setAttribute('aria-invalid',String(!!inputs.worked.value.trim() && (worked===null || worked===0)));
+    errorEl.hidden = problems.length===0;
+    errorEl.textContent = problems.length ? 'Check '+problems.join(', ')+'. Use H:MM:SS for times, whole numbers for shifts, and a worked time above zero.' : '';
+    var ready=problems.length===0 && login!==null && actual!==null && worked!==null && worked>0 && validShifts;
+    if (!ready) {
+      resultNames.forEach(function(name){el(name).textContent='—';});
+      warningEl.hidden=true;
+      return;
+    }
+    var excused = login*shifts;
+    var net = actual-excused;
+    el('excused').textContent=fmtTime(excused);
+    el('netDuration').textContent=fmtTime(net);
+    el('gross').textContent=fmtPercent(actual/worked);
+    el('netPercent').textContent=fmtPercent(net/worked);
+    warningEl.hidden=net>=0;
+    warningEl.textContent=net<0 ? 'Excused login time exceeds recorded UNR. Net values are shown as negative to match the spreadsheet formula.' : '';
+  }
+  names.forEach(function(name){
+    var input=inputs[name];
+    input.addEventListener('input',update);
+    input.addEventListener('change',update);
+    if(name!=='shifts') input.addEventListener('blur',function(){
+      var t=parseTime(input.value);
+      if(t!==null){input.value=fmtTime(t);update();}
+    });
+  });
+  update();
+})();
+</script></article><article class="tool-card" id="panel-probation" data-tool="probation" aria-label="Probation Extension"><div class="card-bar">
+ <button class="card-toggle" type="button" data-expand="probation" aria-controls="panel-probation-content" aria-expanded="true" title="Expand or collapse Probation Extension">
+   <span class="card-mark"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18m-13 5h8"/></svg></span>
+   <span class="card-title"><span class="card-heading">Probation Extension</span><span class="card-subtitle">Leave date extension</span></span>
+   <svg class="card-chevron" aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+ </button>
+ <div class="move-controls" role="group" aria-label="Move Probation Extension">
+   <button type="button" class="move-card" data-move="-1" aria-label="Move Probation Extension left" title="Move one position left"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button>
+   <button type="button" class="move-card" data-move="1" aria-label="Move Probation Extension right" title="Move one position right"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
+ </div>
+</div><section aria-label="Probation Extension Calculator" class="pec-widget" id="panel-probation-content">
+<div class="pec-accent"></div>
+<div class="pec-content">
+<div class="pec-heading">
+<span aria-hidden="true" class="pec-heading-icon">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24" width="20">
+<rect height="16" rx="2" width="18" x="3" y="5"></rect><path d="M7 3v4M17 3v4M3 10h18M8 15h4"></path>
+</svg>
+</span>
+<h2>Probation Extension Calculator</h2>
+</div>
+<div class="pec-fields">
+<label class="pec-field">Original probation end date
+        <input autocomplete="off" class="pec-date" data-pec-original="" type="date"/>
+</label>
+<label class="pec-field">First day of leave
+        <input autocomplete="off" class="pec-date" data-pec-start="" type="date"/>
+</label>
+<label class="pec-field">Return-to-work date
+        <input autocomplete="off" class="pec-date" data-pec-return="" type="date"/>
+</label>
+</div>
+<p class="pec-error" data-pec-error="" hidden="" role="alert"></p>
+<div class="pec-actions">
+<button class="pec-button" data-pec-calculate="" type="button">Calculate</button>
+<button class="pec-clear" data-pec-clear="" type="button">Clear</button>
+</div>
+<div aria-atomic="true" aria-live="polite" class="pec-result">
+<div>
+<div class="pec-result-label">Revised probation end date</div>
+<div class="pec-result-date" data-pec-result="">—</div>
+<div class="pec-result-day" data-pec-weekday=""></div>
+</div>
+<div class="pec-days-block">
+<div class="pec-days-count" data-pec-days="">—</div>
+<div class="pec-days-caption">Days added</div>
+</div>
+</div>
+</div>
+</section><script>
+(function () {
+  'use strict';
+  var root = document.currentScript && document.currentScript.previousElementSibling;
+  if (!root || !root.classList.contains('pec-widget') || root.dataset.pecReady) return;
+  root.dataset.pecReady = 'true';
+
+  function el(selector) { return root.querySelector(selector); }
+  var originalInput = el('[data-pec-original]');
+  var leaveInput = el('[data-pec-start]');
+  var returnInput = el('[data-pec-return]');
+  var result = el('[data-pec-result]');
+  var weekday = el('[data-pec-weekday]');
+  var days = el('[data-pec-days]');
+  var error = el('[data-pec-error]');
+  var DAY_MS = 86400000;
+
+  // Work with UTC calendar days so timezone changes and daylight saving time
+  // cannot alter the number of days included in a leave period.
+  function calendarDay(value) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(value || '')) return null;
+    var parts = value.split('-').map(Number);
+    var date = new Date(0);
+    date.setUTCHours(0, 0, 0, 0);
+    date.setUTCFullYear(parts[0], parts[1] - 1, parts[2]);
+    if (date.getUTCFullYear() !== parts[0] ||
+        date.getUTCMonth() !== parts[1] - 1 ||
+        date.getUTCDate() !== parts[2]) return null;
+    return date.getTime() / DAY_MS;
+  }
+  function formatDay(day, options) {
+    return new Intl.DateTimeFormat('en-US', Object.assign({ timeZone: 'UTC' }, options))
+      .format(new Date(day * DAY_MS));
+  }
+  function showError(message) {
+    error.textContent = message || '';
+    error.hidden = !message;
+  }
+  function calculate() {
+    var original = calendarDay(originalInput.value);
+    var start = calendarDay(leaveInput.value);
+    var back = calendarDay(returnInput.value);
+    result.textContent = '—';
+    weekday.textContent = '';
+    days.textContent = '—';
+    showError('');
+
+    if (original === null || start === null || back === null) return;
+    if (back <= start) {
+      showError('Return-to-work date must be after the first day of leave.');
+      return;
+    }
+
+    var leaveDays = back - start; // Return date itself is not a day of leave.
+    var revised = original + leaveDays;
+    result.textContent = formatDay(revised, { month: 'long', day: 'numeric', year: 'numeric' });
+    weekday.textContent = formatDay(revised, { weekday: 'long' });
+    days.textContent = String(leaveDays);
+  }
+  [originalInput, leaveInput, returnInput].forEach(function (input) {
+    input.addEventListener('input', calculate);
+    input.addEventListener('change', calculate);
+  });
+  el('[data-pec-calculate]').addEventListener('click', calculate);
+  el('[data-pec-clear]').addEventListener('click', function () {
+    originalInput.value = '';
+    leaveInput.value = '';
+    returnInput.value = '';
+    calculate();
+    originalInput.focus();
+  });
+  calculate();
+})();
+</script></article><article class="tool-card" id="panel-zulu" data-tool="zulu" aria-label="Zulu Time"><div class="card-bar">
+ <button class="card-toggle" type="button" data-expand="zulu" aria-controls="panel-zulu-content" aria-expanded="true" title="Expand or collapse Zulu Time">
+   <span class="card-mark"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 6.5v6l4 2.3M3 12h2M19 12h2"/></svg></span>
+   <span class="card-title"><span class="card-heading">Zulu Time</span><span class="card-subtitle">Time zone conversion</span></span>
+   <svg class="card-chevron" aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+ </button>
+ <div class="move-controls" role="group" aria-label="Move Zulu Time">
+   <button type="button" class="move-card" data-move="-1" aria-label="Move Zulu Time left" title="Move one position left"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button>
+   <button type="button" class="move-card" data-move="1" aria-label="Move Zulu Time right" title="Move one position right"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
+ </div>
+</div><section aria-labelledby="zulu-heading" class="zulu-widget" id="panel-zulu-content">
+<div aria-hidden="true" class="zulu-accent"></div>
+<div class="zulu-content">
+<div class="zulu-head">
+<span aria-hidden="true" class="zulu-icon"><svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24" width="20"><circle cx="12" cy="12" r="9"></circle><path d="M12 6.5v6l4 2.3M3 12h2M19 12h2"></path></svg></span>
+<div><h2 id="zulu-heading">Zulu Time Converter</h2><p class="zulu-subtitle">UTC / Zulu to U.S. time zones</p></div>
+</div>
+<div class="zulu-fields">
+<label class="zulu-field">Zulu time (24-hour)
+         <input aria-describedby="zulu-time-hint" autocomplete="off" id="zulu-time" inputmode="text" maxlength="7" placeholder="e.g. 1430 or 14:30" spellcheck="false" type="text"/>
+<span class="zulu-hint" id="zulu-time-hint">Enter HHMM, HH:MM, or HHMMZ</span>
+</label>
+<label class="zulu-field">Zulu date (UTC)
+         <input aria-describedby="zulu-date-hint" id="zulu-date" type="date"/>
+<span class="zulu-hint" id="zulu-date-hint">Needed for daylight saving time</span>
+</label>
+<label class="zulu-field zulu-field-wide">Convert to
+         <select id="zulu-zone">
+<option value="America/Los_Angeles">Pacific (PT)</option>
+<option selected="" value="America/Denver">Mountain (MT)</option>
+<option value="America/Chicago">Central (CT)</option>
+<option value="America/New_York">Eastern (ET)</option>
+</select>
+</label>
+</div>
+<p class="zulu-error" hidden="" id="zulu-error" role="alert"></p>
+<div aria-atomic="true" aria-live="polite" class="zulu-result" role="status">
+<span class="zulu-result-label" id="zulu-result-label">Mountain Time</span>
+<output class="zulu-result-time" for="zulu-time zulu-date zulu-zone" id="zulu-result-time">—</output>
+<div class="zulu-result-date" id="zulu-result-date">Enter a Zulu time to convert</div>
+<div class="zulu-result-detail" id="zulu-result-detail"></div>
+</div>
+<p class="zulu-foot">Automatically adjusts PST/PDT, MST/MDT, CST/CDT, and EST/EDT using the date selected. Mountain follows the Denver time zone.</p>
+</div>
+</section><script>
+ (() => {
+   'use strict';
+   const root=document.getElementById('panel-zulu');
+   if(!root || root.dataset.zuluReady) return;
+   root.dataset.zuluReady='true';
+   const input=root.querySelector('#zulu-time');
+   const dateInput=root.querySelector('#zulu-date');
+   const zoneInput=root.querySelector('#zulu-zone');
+   const error=root.querySelector('#zulu-error');
+   const label=root.querySelector('#zulu-result-label');
+   const timeOut=root.querySelector('#zulu-result-time');
+   const dateOut=root.querySelector('#zulu-result-date');
+   const detailOut=root.querySelector('#zulu-result-detail');
+   const zones={
+     'America/Los_Angeles':'Pacific Time',
+     'America/Denver':'Mountain Time',
+     'America/Chicago':'Central Time',
+     'America/New_York':'Eastern Time'
+   };
+   dateInput.value=new Date().toISOString().slice(0,10);
+   function parseClock(raw){
+     const s=raw.trim().replace(/Z$/i,'');
+     let h,m;
+     if(/^\d{1,2}:[0-5]\d$/.test(s)){
+       [h,m]=s.split(':').map(Number);
+     }else if(/^\d{3,4}$/.test(s)){
+       h=Number(s.slice(0,-2));m=Number(s.slice(-2));
+     }else return null;
+     if(!Number.isInteger(h)||h>23||m>59) return null;
+     return {h,m};
+   }
+   function getInstant(utcDate,h,m){
+     const match=/^(\d{4})-(\d{2})-(\d{2})$/.exec(utcDate);
+     if(!match)return null;
+     const year=Number(match[1]),month=Number(match[2]),day=Number(match[3]);
+     const date=new Date(0);
+     date.setUTCHours(0,0,0,0);
+     date.setUTCFullYear(year,month-1,day);
+     if(date.getUTCFullYear()!==year||date.getUTCMonth()!==month-1||date.getUTCDate()!==day)return null;
+     date.setUTCHours(h,m,0,0);
+     return date;
+   }
+   function render(){
+     const zone=zoneInput.value;
+     label.textContent=zones[zone]||'Local time';
+     const raw=input.value.trim();
+     input.removeAttribute('aria-invalid');
+     error.hidden=true;error.textContent='';
+     timeOut.textContent='—';dateOut.textContent='Enter a Zulu time to convert';detailOut.textContent='';
+     if(!raw)return;
+     const clock=parseClock(raw);
+     if(!clock){
+       error.textContent='Enter a valid 24-hour Zulu time, such as 0930 or 21:45.';
+       error.hidden=false;input.setAttribute('aria-invalid','true');
+       dateOut.textContent='Unable to convert';return;
+     }
+     const instant=getInstant(dateInput.value,clock.h,clock.m);
+     if(!instant){
+       error.textContent='Select a valid Zulu date.';error.hidden=false;
+       dateOut.textContent='Unable to convert';return;
+     }
+     const stamp=new Intl.DateTimeFormat('en-US',{
+       timeZone:zone,hour:'numeric',minute:'2-digit',hour12:true,timeZoneName:'short'
+     }).format(instant);
+     const datePart=new Intl.DateTimeFormat('en-US',{
+       timeZone:zone,weekday:'short',month:'short',day:'numeric',year:'numeric'
+     }).format(instant);
+     const localParts=new Intl.DateTimeFormat('en-CA',{
+       timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit'
+     }).formatToParts(instant);
+     const localDate=new Map(localParts.map(x=>[x.type,x.value]));
+     const localKey=localDate.get('year')+'-'+localDate.get('month')+'-'+localDate.get('day');
+     const dayShift=localKey<dateInput.value?' · Previous day':localKey>dateInput.value?' · Next day':'';
+     timeOut.textContent=stamp;
+     dateOut.textContent=datePart+dayShift;
+     detailOut.textContent='From '+String(clock.h).padStart(2,'0')+':'+String(clock.m).padStart(2,'0')+' Z on '+dateInput.value;
+   }
+   [input,dateInput,zoneInput].forEach(el=>{
+     el.addEventListener('input',render);
+     el.addEventListener('change',render);
+   });
+   render();
+ })();
+ </script></article><article class="tool-card is-collapsed" id="panel-seconds" data-tool="seconds" aria-label="Seconds to Minutes"><div class="card-bar">
+ <button class="card-toggle" type="button" data-expand="seconds" aria-controls="seconds-to-minutes-calculator" aria-expanded="false" title="Expand or collapse Seconds to Minutes">
+   <span class="card-mark"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2M9 2h6"/></svg></span>
+   <span class="card-title"><span class="card-heading">Seconds to Minutes</span><span class="card-subtitle">Time conversion</span></span>
+   <svg class="card-chevron" aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+ </button>
+ <div class="move-controls" role="group" aria-label="Move Seconds to Minutes">
+   <button type="button" class="move-card" data-move="-1" aria-label="Move Seconds to Minutes left" title="Move one position left"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button>
+   <button type="button" class="move-card" data-move="1" aria-label="Move Seconds to Minutes right" title="Move one position right"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
+ </div>
+</div><section aria-labelledby="stm-title" id="seconds-to-minutes-calculator">
+<div aria-hidden="true" class="stm-accent"></div>
+<div class="stm-content">
+<h2 id="stm-title">Seconds to Minutes</h2>
+<label for="stm-seconds">Seconds</label>
+<div class="stm-field">
+<input aria-describedby="stm-error" autocomplete="off" id="stm-seconds" inputmode="decimal" min="0" placeholder="Enter seconds" step="any" type="number"/>
+<span class="stm-unit">seconds</span>
+</div>
+<p aria-live="polite" class="stm-error" id="stm-error"></p>
+<div aria-atomic="true" aria-live="polite" class="stm-results">
+<div class="stm-result stm-result-primary">
+<span class="stm-result-label">Minutes : Seconds</span>
+<output for="stm-seconds" id="stm-clock">0:00</output>
+</div>
+</div>
+</div>
+</section><script>
+    (() => {
+      const module = document.getElementById('seconds-to-minutes-calculator');
+      if (!module) return;
+      const input = module.querySelector('#stm-seconds');
+      const clockOutput = module.querySelector('#stm-clock');
+      const error = module.querySelector('#stm-error');
+      const integerFormat = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
+
+      function convert() {
+        const raw = input.value.trim();
+        if (raw === '') {
+          clockOutput.textContent = '0:00';
+          error.textContent = '';
+          input.removeAttribute('aria-invalid');
+          return;
+        }
+        const seconds = Number(raw);
+        if (!Number.isFinite(seconds) || seconds < 0) {
+          clockOutput.textContent = '—';
+          error.textContent = 'Enter a valid number of seconds (0 or more).';
+          input.setAttribute('aria-invalid', 'true');
+          return;
+        }
+        error.textContent = '';
+        input.removeAttribute('aria-invalid');
+        // Round to hundredths of a second, avoiding :60 from floating-point rounding.
+        const hundredths = Math.round(seconds * 100);
+        const wholeMinutes = Math.floor(hundredths / 6000);
+        const remainingHundredths = hundredths % 6000;
+        const wholeSeconds = Math.floor(remainingHundredths / 100);
+        const fractionalHundredths = remainingHundredths % 100;
+        const suffix = fractionalHundredths
+          ? '.' + String(fractionalHundredths).padStart(2, '0').replace(/0$/, '')
+          : '';
+        clockOutput.textContent = `${integerFormat.format(wholeMinutes)}:${String(wholeSeconds).padStart(2, '0')}${suffix}`;
+      }
+
+      input.addEventListener('input', convert);
+      convert();
+    })();
+  </script></article></section>
+</main><script>(() => {
+  'use strict';
+  const ids = ['unr', 'probation', 'zulu', 'seconds'];
+  const storeKey = 'care-leader-tools-two-column-v1';
+  const legacyKey = 'care-simple-dashboard-visible-v1';
+  const workspace = document.getElementById('workspace');
+  const cards = Object.fromEntries(ids.map(id => [id, document.getElementById('panel-' + id)]));
+  let order = ids.slice();
+  let expanded = {unr:true, probation:true, zulu:true, seconds:false};
+
+  try {
+    const saved = JSON.parse(localStorage.getItem(storeKey));
+    if (saved && typeof saved === 'object') {
+      if (Array.isArray(saved.order)) order = [...new Set(saved.order.filter(id => ids.includes(id)))].concat(ids.filter(id => !saved.order.includes(id)));
+      if (saved.expanded && typeof saved.expanded === 'object') {
+        ids.forEach(id => { if (typeof saved.expanded[id] === 'boolean') expanded[id] = saved.expanded[id]; });
+      }
+    } else {
+      const previous = JSON.parse(localStorage.getItem(legacyKey));
+      if (Array.isArray(previous) && previous.every(id => ids.includes(id))) {
+        ids.forEach(id => {expanded[id] = previous.includes(id);});
+      }
+    }
+  } catch(error) { /* Storage may be disabled. */ }
+
+  function persist() {
+    try {localStorage.setItem(storeKey, JSON.stringify({order, expanded}));} catch(error) {}
+  }
+  function render() {
+    // Move existing DOM nodes, preserving each calculator's inputs and scripts.
+    order.forEach(id => workspace.appendChild(cards[id]));
+    ids.forEach(id => {
+      const isOpen = expanded[id];
+      const card = cards[id];
+      card.classList.toggle('is-collapsed', !isOpen);
+      card.querySelector('[data-expand]').setAttribute('aria-expanded', String(isOpen));
+      const content = card.querySelector('[data-expand]').getAttribute('aria-controls');
+      const widget = document.getElementById(content);
+      if(widget) widget.hidden = !isOpen;
+    });
+    persist();
+  }
+  function move(id, delta) {
+    const index = order.indexOf(id);
+    const next = (index + delta + order.length) % order.length;
+    if(index === next) return;
+    order.splice(index, 1);
+    order.splice(next, 0, id);
+    render();
+  }
+  ids.forEach(id => {
+    cards[id].querySelector('[data-expand]').addEventListener('click', () => {
+      expanded[id] = !expanded[id];
+      render();
+    });
+    cards[id].querySelectorAll('[data-move]').forEach(button => {
+      button.addEventListener('click', () => move(id, Number(button.dataset.move)));
+    });
+  });
+  document.getElementById('expand-all').addEventListener('click', () => { ids.forEach(id => expanded[id]=true);render(); });
+  document.getElementById('collapse-all').addEventListener('click', () => { ids.forEach(id => expanded[id]=false);render(); });
+  render();
+})();</script></body></html>
