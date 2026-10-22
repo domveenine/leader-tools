@@ -551,25 +551,45 @@ h1 {font-size:clamp(25px,2.4vw,34px);line-height:1.12;font-weight:780;letter-spa
 .move-card:hover{color:#fff;background:#34567e;border-color:#6d98c8}
 @media(max-width:710px){.workspace{grid-template-columns:minmax(0,1fr)}.shell{padding:16px 13px 30px}.page-header{gap:12px}}
 @media(max-width:450px){.workspace{gap:12px}.card-bar{padding:9px 10px;gap:7px}.card-toggle{gap:8px}.card-heading{font-size:13px}.card-subtitle{font-size:10px}.move-controls{gap:4px;padding-left:7px}.move-card{width:30px;height:30px}.card-mark{flex-basis:31px;width:31px;height:31px}.display-btn{padding:8px 12px}}
+
+/* Compact masonry grid: each tool occupies only the vertical space it needs.
+   Short cards no longer force the opposite column to start a new shared row. */
+.workspace {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: 4px;
+  grid-auto-flow: row dense;
+  column-gap: 16px;
+  row-gap: 4px;
+  align-items: start;
+}
+.workspace > .tool-card {
+  grid-row-end: span 10;
+  align-self: start;
+  width: 100%;
+}
+@media (max-width: 710px) {
+  .workspace { grid-template-columns: minmax(0, 1fr); }
+}
 </style></head>
 <body><div class="brandline" aria-hidden="true"></div>
 <main class="shell">
 <header class="page-header">
-  <div><h1>Leader Tools</h1><p class="page-subtitle">Click a calculator to expand it. Use the arrows to change its position.</p></div>
-  <div class="display-actions" aria-label="Calculator display">
-    <button type="button" class="display-btn" id="expand-all">Expand all</button>
-    <button type="button" class="display-btn" id="collapse-all">Collapse all</button>
+  <div><h1>Leader Tools</h1><p class="page-subtitle">Expand Or Collapse Any Tool. Use The Arrows To Change Its Position; Cards Fill Available Space.</p></div>
+  <div class="display-actions" aria-label="Calculator Display">
+    <button type="button" class="display-btn" id="expand-all">Expand All</button>
+    <button type="button" class="display-btn" id="collapse-all">Collapse All</button>
   </div>
 </header>
-<section class="workspace" id="workspace" aria-label="Open calculators"><article class="tool-card" id="panel-unr" data-tool="unr" aria-label="UNR Calculator"><div class="card-bar">
- <button class="card-toggle" type="button" data-expand="unr" aria-controls="panel-unr-content" aria-expanded="true" title="Expand or collapse UNR Calculator">
+<section class="workspace" id="workspace" aria-label="Open Calculators"><article class="tool-card" id="panel-unr" data-tool="unr" aria-label="UNR Calculator"><div class="card-bar">
+ <button class="card-toggle" type="button" data-expand="unr" aria-controls="panel-unr-content" aria-expanded="true" title="Expand Or Collapse UNR Calculator">
    <span class="card-mark"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5M4 19h16M8 15v-4M13 15V7M18 15V10"/></svg></span>
-   <span class="card-title"><span class="card-heading">UNR Calculator</span><span class="card-subtitle">Unapproved/Not Ready time</span></span>
+   <span class="card-title"><span class="card-heading">UNR Calculator</span><span class="card-subtitle">Unapproved/Not Ready Time</span></span>
    <svg class="card-chevron" aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
  </button>
  <div class="move-controls" role="group" aria-label="Move UNR Calculator">
-   <button type="button" class="move-card" data-move="-1" aria-label="Move UNR Calculator left" title="Move one position left"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button>
-   <button type="button" class="move-card" data-move="1" aria-label="Move UNR Calculator right" title="Move one position right"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
+   <button type="button" class="move-card" data-move="-1" aria-label="Move UNR Calculator Left" title="Move One Position Left"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button>
+   <button type="button" class="move-card" data-move="1" aria-label="Move UNR Calculator Right" title="Move One Position Right"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
  </div>
 </div><section aria-label="Unavailable / Non-Ready Calculator" class="unc-widget" id="panel-unr-content">
 <div aria-hidden="true" class="unc-accent"></div>
@@ -585,46 +605,46 @@ h1 {font-size:clamp(25px,2.4vw,34px);line-height:1.12;font-weight:780;letter-spa
 </header>
 <p class="unc-section-label">Inputs</p>
 <div class="unc-fields">
-<label class="unc-field">Initial Login Time per shift
-        <input aria-describedby="unc-login-hint" autocomplete="off" class="unc-input" data-unc="login" inputmode="text" placeholder="0:09:59" spellcheck="false" type="text" value="0:09:59"/>
-<span class="unc-hint" id="unc-login-hint">H:MM:SS, allowed per shift</span>
+<label class="unc-field">Initial Login Time Per Shift
+        <input aria-describedby="unc-login-hint" autocomplete="off" class="unc-input" data-unc="login" inputmode="text" placeholder="e.g. 0:09:59" spellcheck="false" type="text" value="0:09:59"/>
+<span class="unc-hint" id="unc-login-hint">H:MM:SS, Allowed Per Shift</span>
 </label>
-<label class="unc-field">Days worked (shifts)
-        <input autocomplete="off" class="unc-input" data-unc="shifts" min="0" placeholder="0" step="1" type="number" value="16"/>
-<span class="unc-hint">Total shifts for the period</span>
+<label class="unc-field">Days Worked (Shifts)
+        <input autocomplete="off" class="unc-input" data-unc="shifts" min="0" placeholder="e.g. 16" step="1" type="number" value=""/>
+<span class="unc-hint">Total Shifts For The Period</span>
 </label>
-<label class="unc-field">Actual UNR (month-end)
-        <input autocomplete="off" class="unc-input" data-unc="actual" inputmode="text" placeholder="5:24:00" spellcheck="false" type="text" value="5:24:00"/>
-<span class="unc-hint">H:MM:SS, total recorded UNR</span>
+<label class="unc-field">Actual UNR (Month-End)
+        <input autocomplete="off" class="unc-input" data-unc="actual" inputmode="text" placeholder="e.g. 5:24:00" spellcheck="false" type="text" value=""/>
+<span class="unc-hint">H:MM:SS, Total Recorded UNR</span>
 </label>
-<label class="unc-field">Total hours worked
-        <input autocomplete="off" class="unc-input" data-unc="worked" inputmode="text" placeholder="146:58:00" spellcheck="false" type="text" value="146:58:00"/>
-<span class="unc-hint">H:MM:SS, total worked time</span>
+<label class="unc-field">Total Hours Worked
+        <input autocomplete="off" class="unc-input" data-unc="worked" inputmode="text" placeholder="e.g. 146:58:00" spellcheck="false" type="text" value=""/>
+<span class="unc-hint">H:MM:SS, Total Worked Time</span>
 </label>
 </div>
 <p class="unc-note" data-unc="error" hidden="" role="alert"></p>
 <div aria-hidden="true" class="unc-rule"></div>
-<p class="unc-section-label">Calculated results</p>
+<p class="unc-section-label">Calculated Results</p>
 <div aria-atomic="false" aria-live="polite" class="unc-results">
 <div class="unc-result-card">
 <div class="unc-result-label">Gross UNR %</div>
-<div class="unc-result-value" data-unc="gross">3.67%</div>
-<div class="unc-result-sub">Before excused login time</div>
+<div class="unc-result-value" data-unc="gross">—</div>
+<div class="unc-result-sub">Before Excused Login Time</div>
 </div>
 <div class="unc-result-card unc-featured">
 <div class="unc-result-label">Net UNR %</div>
-<div class="unc-result-value" data-unc="netPercent">1.86%</div>
-<div class="unc-result-sub">After excused login time</div>
+<div class="unc-result-value" data-unc="netPercent">—</div>
+<div class="unc-result-sub">After Excused Login Time</div>
 </div>
 </div>
 <div class="unc-detail-list">
 <div class="unc-detail">
-<span class="unc-detail-name">Initial Login Time total</span>
-<output class="unc-detail-amount" data-unc="excused">2:39:44</output>
+<span class="unc-detail-name">Initial Login Time Total</span>
+<output class="unc-detail-amount" data-unc="excused">—</output>
 </div>
 <div class="unc-detail">
-<span class="unc-detail-name">Net UNR (after Initial Login Time)</span>
-<output class="unc-detail-amount" data-unc="netDuration">2:44:16</output>
+<span class="unc-detail-name">Net UNR (After Initial Login Time)</span>
+<output class="unc-detail-amount" data-unc="netDuration">—</output>
 </div>
 </div>
 <p class="unc-warning" data-unc="warning" hidden=""></p>
@@ -666,15 +686,15 @@ h1 {font-size:clamp(25px,2.4vw,34px);line-height:1.12;font-weight:780;letter-spa
     var validShifts = shifts!==null && Number.isSafeInteger(shifts) && shifts>=0 && shifts<=100000;
     var problems=[];
     if (inputs.login.value.trim() && login===null) problems.push('Initial Login Time');
-    if (shiftText && !validShifts) problems.push('Days worked');
+    if (shiftText && !validShifts) problems.push('Days Worked');
     if (inputs.actual.value.trim() && actual===null) problems.push('Actual UNR');
-    if (inputs.worked.value.trim() && (worked===null || worked===0)) problems.push('Total hours worked');
+    if (inputs.worked.value.trim() && (worked===null || worked===0)) problems.push('Total Hours Worked');
     inputs.login.setAttribute('aria-invalid',String(!!inputs.login.value.trim() && login===null));
     inputs.shifts.setAttribute('aria-invalid',String(!!shiftText && !validShifts));
     inputs.actual.setAttribute('aria-invalid',String(!!inputs.actual.value.trim() && actual===null));
     inputs.worked.setAttribute('aria-invalid',String(!!inputs.worked.value.trim() && (worked===null || worked===0)));
     errorEl.hidden = problems.length===0;
-    errorEl.textContent = problems.length ? 'Check '+problems.join(', ')+'. Use H:MM:SS for times, whole numbers for shifts, and a worked time above zero.' : '';
+    errorEl.textContent = problems.length ? 'Check '+problems.join(', ')+'. Use H:MM:SS For Times, Whole Numbers For Shifts, And A Worked Time Above Zero.' : '';
     var ready=problems.length===0 && login!==null && actual!==null && worked!==null && worked>0 && validShifts;
     if (!ready) {
       resultNames.forEach(function(name){el(name).textContent='—';});
@@ -688,7 +708,7 @@ h1 {font-size:clamp(25px,2.4vw,34px);line-height:1.12;font-weight:780;letter-spa
     el('gross').textContent=fmtPercent(actual/worked);
     el('netPercent').textContent=fmtPercent(net/worked);
     warningEl.hidden=net>=0;
-    warningEl.textContent=net<0 ? 'Excused login time exceeds recorded UNR. Net values are shown as negative to match the spreadsheet formula.' : '';
+    warningEl.textContent=net<0 ? 'Excused Login Time Exceeds Recorded UNR. Net Values Are Shown As Negative To Match The Spreadsheet Formula.' : '';
   }
   names.forEach(function(name){
     var input=inputs[name];
@@ -702,14 +722,14 @@ h1 {font-size:clamp(25px,2.4vw,34px);line-height:1.12;font-weight:780;letter-spa
   update();
 })();
 </script></article><article class="tool-card" id="panel-probation" data-tool="probation" aria-label="Probation Extension"><div class="card-bar">
- <button class="card-toggle" type="button" data-expand="probation" aria-controls="panel-probation-content" aria-expanded="true" title="Expand or collapse Probation Extension">
+ <button class="card-toggle" type="button" data-expand="probation" aria-controls="panel-probation-content" aria-expanded="true" title="Expand Or Collapse Probation Extension">
    <span class="card-mark"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18m-13 5h8"/></svg></span>
-   <span class="card-title"><span class="card-heading">Probation Extension</span><span class="card-subtitle">Leave date extension</span></span>
+   <span class="card-title"><span class="card-heading">Probation Extension</span><span class="card-subtitle">Leave Date Extension</span></span>
    <svg class="card-chevron" aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
  </button>
  <div class="move-controls" role="group" aria-label="Move Probation Extension">
-   <button type="button" class="move-card" data-move="-1" aria-label="Move Probation Extension left" title="Move one position left"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button>
-   <button type="button" class="move-card" data-move="1" aria-label="Move Probation Extension right" title="Move one position right"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
+   <button type="button" class="move-card" data-move="-1" aria-label="Move Probation Extension Left" title="Move One Position Left"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button>
+   <button type="button" class="move-card" data-move="1" aria-label="Move Probation Extension Right" title="Move One Position Right"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
  </div>
 </div><section aria-label="Probation Extension Calculator" class="pec-widget" id="panel-probation-content">
 <div class="pec-accent"></div>
@@ -723,13 +743,13 @@ h1 {font-size:clamp(25px,2.4vw,34px);line-height:1.12;font-weight:780;letter-spa
 <h2>Probation Extension Calculator</h2>
 </div>
 <div class="pec-fields">
-<label class="pec-field">Original probation end date
+<label class="pec-field">Original Probation End Date
         <input autocomplete="off" class="pec-date" data-pec-original="" type="date"/>
 </label>
-<label class="pec-field">First day of leave
+<label class="pec-field">First Day Of Leave
         <input autocomplete="off" class="pec-date" data-pec-start="" type="date"/>
 </label>
-<label class="pec-field">Return-to-work date
+<label class="pec-field">Return-To-Work Date
         <input autocomplete="off" class="pec-date" data-pec-return="" type="date"/>
 </label>
 </div>
@@ -740,13 +760,13 @@ h1 {font-size:clamp(25px,2.4vw,34px);line-height:1.12;font-weight:780;letter-spa
 </div>
 <div aria-atomic="true" aria-live="polite" class="pec-result">
 <div>
-<div class="pec-result-label">Revised probation end date</div>
+<div class="pec-result-label">Revised Probation End Date</div>
 <div class="pec-result-date" data-pec-result="">—</div>
 <div class="pec-result-day" data-pec-weekday=""></div>
 </div>
 <div class="pec-days-block">
 <div class="pec-days-count" data-pec-days="">—</div>
-<div class="pec-days-caption">Days added</div>
+<div class="pec-days-caption">Days Added</div>
 </div>
 </div>
 </div>
@@ -799,7 +819,7 @@ h1 {font-size:clamp(25px,2.4vw,34px);line-height:1.12;font-weight:780;letter-spa
 
     if (original === null || start === null || back === null) return;
     if (back <= start) {
-      showError('Return-to-work date must be after the first day of leave.');
+      showError('Return-To-Work Date Must Be After The First Day Of Leave.');
       return;
     }
 
@@ -824,32 +844,32 @@ h1 {font-size:clamp(25px,2.4vw,34px);line-height:1.12;font-weight:780;letter-spa
   calculate();
 })();
 </script></article><article class="tool-card" id="panel-zulu" data-tool="zulu" aria-label="Zulu Time"><div class="card-bar">
- <button class="card-toggle" type="button" data-expand="zulu" aria-controls="panel-zulu-content" aria-expanded="true" title="Expand or collapse Zulu Time">
+ <button class="card-toggle" type="button" data-expand="zulu" aria-controls="panel-zulu-content" aria-expanded="true" title="Expand Or Collapse Zulu Time">
    <span class="card-mark"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 6.5v6l4 2.3M3 12h2M19 12h2"/></svg></span>
-   <span class="card-title"><span class="card-heading">Zulu Time</span><span class="card-subtitle">Time zone conversion</span></span>
+   <span class="card-title"><span class="card-heading">Zulu Time</span><span class="card-subtitle">Time Zone Conversion</span></span>
    <svg class="card-chevron" aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
  </button>
  <div class="move-controls" role="group" aria-label="Move Zulu Time">
-   <button type="button" class="move-card" data-move="-1" aria-label="Move Zulu Time left" title="Move one position left"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button>
-   <button type="button" class="move-card" data-move="1" aria-label="Move Zulu Time right" title="Move one position right"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
+   <button type="button" class="move-card" data-move="-1" aria-label="Move Zulu Time Left" title="Move One Position Left"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button>
+   <button type="button" class="move-card" data-move="1" aria-label="Move Zulu Time Right" title="Move One Position Right"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
  </div>
 </div><section aria-labelledby="zulu-heading" class="zulu-widget" id="panel-zulu-content">
 <div aria-hidden="true" class="zulu-accent"></div>
 <div class="zulu-content">
 <div class="zulu-head">
 <span aria-hidden="true" class="zulu-icon"><svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.9" viewbox="0 0 24 24" width="20"><circle cx="12" cy="12" r="9"></circle><path d="M12 6.5v6l4 2.3M3 12h2M19 12h2"></path></svg></span>
-<div><h2 id="zulu-heading">Zulu Time Converter</h2><p class="zulu-subtitle">UTC / Zulu to U.S. time zones</p></div>
+<div><h2 id="zulu-heading">Zulu Time Converter</h2><p class="zulu-subtitle">UTC / Zulu To U.S. Time Zones</p></div>
 </div>
 <div class="zulu-fields">
-<label class="zulu-field">Zulu time (24-hour)
+<label class="zulu-field">Zulu Time (24-Hour)
          <input aria-describedby="zulu-time-hint" autocomplete="off" id="zulu-time" inputmode="text" maxlength="7" placeholder="e.g. 1430 or 14:30" spellcheck="false" type="text"/>
-<span class="zulu-hint" id="zulu-time-hint">Enter HHMM, HH:MM, or HHMMZ</span>
+<span class="zulu-hint" id="zulu-time-hint">Enter HHMM, HH:MM, Or HHMMZ</span>
 </label>
-<label class="zulu-field">Zulu date (UTC)
+<label class="zulu-field">Zulu Date (UTC)
          <input aria-describedby="zulu-date-hint" id="zulu-date" type="date"/>
-<span class="zulu-hint" id="zulu-date-hint">Needed for daylight saving time</span>
+<span class="zulu-hint" id="zulu-date-hint">Needed For Daylight Saving Time</span>
 </label>
-<label class="zulu-field zulu-field-wide">Convert to
+<label class="zulu-field zulu-field-wide">Convert To
          <select id="zulu-zone">
 <option value="America/Los_Angeles">Pacific (PT)</option>
 <option selected="" value="America/Denver">Mountain (MT)</option>
@@ -862,10 +882,10 @@ h1 {font-size:clamp(25px,2.4vw,34px);line-height:1.12;font-weight:780;letter-spa
 <div aria-atomic="true" aria-live="polite" class="zulu-result" role="status">
 <span class="zulu-result-label" id="zulu-result-label">Mountain Time</span>
 <output class="zulu-result-time" for="zulu-time zulu-date zulu-zone" id="zulu-result-time">—</output>
-<div class="zulu-result-date" id="zulu-result-date">Enter a Zulu time to convert</div>
+<div class="zulu-result-date" id="zulu-result-date">Enter A Zulu Time To Convert</div>
 <div class="zulu-result-detail" id="zulu-result-detail"></div>
 </div>
-<p class="zulu-foot">Automatically adjusts PST/PDT, MST/MDT, CST/CDT, and EST/EDT using the date selected. Mountain follows the Denver time zone.</p>
+<p class="zulu-foot">Automatically Adjusts PST/PDT, MST/MDT, CST/CDT, And EST/EDT Using The Date Selected. Mountain Follows The Denver Time Zone.</p>
 </div>
 </section><script>
  (() => {
@@ -912,22 +932,22 @@ h1 {font-size:clamp(25px,2.4vw,34px);line-height:1.12;font-weight:780;letter-spa
    }
    function render(){
      const zone=zoneInput.value;
-     label.textContent=zones[zone]||'Local time';
+     label.textContent=zones[zone]||'Local Time';
      const raw=input.value.trim();
      input.removeAttribute('aria-invalid');
      error.hidden=true;error.textContent='';
-     timeOut.textContent='—';dateOut.textContent='Enter a Zulu time to convert';detailOut.textContent='';
+     timeOut.textContent='—';dateOut.textContent='Enter A Zulu Time To Convert';detailOut.textContent='';
      if(!raw)return;
      const clock=parseClock(raw);
      if(!clock){
-       error.textContent='Enter a valid 24-hour Zulu time, such as 0930 or 21:45.';
+       error.textContent='Enter A Valid 24-Hour Zulu Time, Such As 0930 Or 21:45.';
        error.hidden=false;input.setAttribute('aria-invalid','true');
-       dateOut.textContent='Unable to convert';return;
+       dateOut.textContent='Unable To Convert';return;
      }
      const instant=getInstant(dateInput.value,clock.h,clock.m);
      if(!instant){
-       error.textContent='Select a valid Zulu date.';error.hidden=false;
-       dateOut.textContent='Unable to convert';return;
+       error.textContent='Select A Valid Zulu Date.';error.hidden=false;
+       dateOut.textContent='Unable To Convert';return;
      }
      const stamp=new Intl.DateTimeFormat('en-US',{
        timeZone:zone,hour:'numeric',minute:'2-digit',hour12:true,timeZoneName:'short'
@@ -940,10 +960,10 @@ h1 {font-size:clamp(25px,2.4vw,34px);line-height:1.12;font-weight:780;letter-spa
      }).formatToParts(instant);
      const localDate=new Map(localParts.map(x=>[x.type,x.value]));
      const localKey=localDate.get('year')+'-'+localDate.get('month')+'-'+localDate.get('day');
-     const dayShift=localKey<dateInput.value?' · Previous day':localKey>dateInput.value?' · Next day':'';
+     const dayShift=localKey<dateInput.value?' · Previous Day':localKey>dateInput.value?' · Next Day':'';
      timeOut.textContent=stamp;
      dateOut.textContent=datePart+dayShift;
-     detailOut.textContent='From '+String(clock.h).padStart(2,'0')+':'+String(clock.m).padStart(2,'0')+' Z on '+dateInput.value;
+     detailOut.textContent='From '+String(clock.h).padStart(2,'0')+':'+String(clock.m).padStart(2,'0')+' Z On '+dateInput.value;
    }
    [input,dateInput,zoneInput].forEach(el=>{
      el.addEventListener('input',render);
@@ -951,24 +971,24 @@ h1 {font-size:clamp(25px,2.4vw,34px);line-height:1.12;font-weight:780;letter-spa
    });
    render();
  })();
- </script></article><article class="tool-card is-collapsed" id="panel-seconds" data-tool="seconds" aria-label="Seconds to Minutes"><div class="card-bar">
- <button class="card-toggle" type="button" data-expand="seconds" aria-controls="seconds-to-minutes-calculator" aria-expanded="false" title="Expand or collapse Seconds to Minutes">
+ </script></article><article class="tool-card" id="panel-seconds" data-tool="seconds" aria-label="Seconds To Minutes"><div class="card-bar">
+ <button class="card-toggle" type="button" data-expand="seconds" aria-controls="seconds-to-minutes-calculator" aria-expanded="true" title="Expand Or Collapse Seconds To Minutes">
    <span class="card-mark"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2M9 2h6"/></svg></span>
-   <span class="card-title"><span class="card-heading">Seconds to Minutes</span><span class="card-subtitle">Time conversion</span></span>
+   <span class="card-title"><span class="card-heading">Seconds To Minutes</span><span class="card-subtitle">Time Conversion</span></span>
    <svg class="card-chevron" aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
  </button>
- <div class="move-controls" role="group" aria-label="Move Seconds to Minutes">
-   <button type="button" class="move-card" data-move="-1" aria-label="Move Seconds to Minutes left" title="Move one position left"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button>
-   <button type="button" class="move-card" data-move="1" aria-label="Move Seconds to Minutes right" title="Move one position right"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
+ <div class="move-controls" role="group" aria-label="Move Seconds To Minutes">
+   <button type="button" class="move-card" data-move="-1" aria-label="Move Seconds To Minutes Left" title="Move One Position Left"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m7-7-7 7 7 7"/></svg></button>
+   <button type="button" class="move-card" data-move="1" aria-label="Move Seconds To Minutes Right" title="Move One Position Right"><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
  </div>
 </div><section aria-labelledby="stm-title" id="seconds-to-minutes-calculator">
 <div aria-hidden="true" class="stm-accent"></div>
 <div class="stm-content">
-<h2 id="stm-title">Seconds to Minutes</h2>
+<h2 id="stm-title">Seconds To Minutes</h2>
 <label for="stm-seconds">Seconds</label>
 <div class="stm-field">
-<input aria-describedby="stm-error" autocomplete="off" id="stm-seconds" inputmode="decimal" min="0" placeholder="Enter seconds" step="any" type="number"/>
-<span class="stm-unit">seconds</span>
+<input aria-describedby="stm-error" autocomplete="off" id="stm-seconds" inputmode="decimal" min="0" placeholder="e.g. 125" step="any" type="number"/>
+<span class="stm-unit">Seconds</span>
 </div>
 <p aria-live="polite" class="stm-error" id="stm-error"></p>
 <div aria-atomic="true" aria-live="polite" class="stm-results">
@@ -998,7 +1018,7 @@ h1 {font-size:clamp(25px,2.4vw,34px);line-height:1.12;font-weight:780;letter-spa
         const seconds = Number(raw);
         if (!Number.isFinite(seconds) || seconds < 0) {
           clockOutput.textContent = '—';
-          error.textContent = 'Enter a valid number of seconds (0 or more).';
+          error.textContent = 'Enter A Valid Number Of Seconds (0 Or More).';
           input.setAttribute('aria-invalid', 'true');
           return;
         }
@@ -1023,12 +1043,13 @@ h1 {font-size:clamp(25px,2.4vw,34px);line-height:1.12;font-weight:780;letter-spa
 </main><script>(() => {
   'use strict';
   const ids = ['unr', 'probation', 'zulu', 'seconds'];
-  const storeKey = 'care-leader-tools-two-column-v1';
+  const storeKey = 'care-leader-tools-two-column-v2';
+  const priorStoreKey = 'care-leader-tools-two-column-v1';
   const legacyKey = 'care-simple-dashboard-visible-v1';
   const workspace = document.getElementById('workspace');
   const cards = Object.fromEntries(ids.map(id => [id, document.getElementById('panel-' + id)]));
   let order = ids.slice();
-  let expanded = {unr:true, probation:true, zulu:true, seconds:false};
+  let expanded = {unr:true, probation:true, zulu:true, seconds:true};
 
   try {
     const saved = JSON.parse(localStorage.getItem(storeKey));
@@ -1038,16 +1059,42 @@ h1 {font-size:clamp(25px,2.4vw,34px);line-height:1.12;font-weight:780;letter-spa
         ids.forEach(id => { if (typeof saved.expanded[id] === 'boolean') expanded[id] = saved.expanded[id]; });
       }
     } else {
-      const previous = JSON.parse(localStorage.getItem(legacyKey));
-      if (Array.isArray(previous) && previous.every(id => ids.includes(id))) {
-        ids.forEach(id => {expanded[id] = previous.includes(id);});
+      const oldPrefs = JSON.parse(localStorage.getItem(priorStoreKey));
+      if (oldPrefs && Array.isArray(oldPrefs.order)) {
+        order = [...new Set(oldPrefs.order.filter(id => ids.includes(id)))].concat(ids.filter(id => !oldPrefs.order.includes(id)));
       }
+      // Migrate only the previous order. All tools start expanded on this new version.
     }
   } catch(error) { /* Storage may be disabled. */ }
 
   function persist() {
     try {localStorage.setItem(storeKey, JSON.stringify({order, expanded}));} catch(error) {}
   }
+  // CSS Grid masonry: each card spans the rows matching its actual height.
+  // ResizeObserver handles results, expanding/collapsing, and display changes.
+  const gridRowHeight = 4;
+  const gridRowGap = 4;
+  let layoutFrame = 0;
+  function updateGridSpans() {
+    layoutFrame = 0;
+    ids.forEach(id => {
+      const card = cards[id];
+      const height = card.getBoundingClientRect().height;
+      if (!height) return;
+      const span = Math.max(1, Math.ceil((height + gridRowGap) / (gridRowHeight + gridRowGap)));
+      const value = 'span ' + span;
+      if (card.style.gridRowEnd !== value) card.style.gridRowEnd = value;
+    });
+  }
+  function scheduleGridSpans() {
+    if (!layoutFrame) layoutFrame = requestAnimationFrame(updateGridSpans);
+  }
+  if ('ResizeObserver' in window) {
+    const gridObserver = new ResizeObserver(scheduleGridSpans);
+    ids.forEach(id => gridObserver.observe(cards[id]));
+  }
+  window.addEventListener('resize', scheduleGridSpans);
+
   function render() {
     // Move existing DOM nodes, preserving each calculator's inputs and scripts.
     order.forEach(id => workspace.appendChild(cards[id]));
@@ -1061,6 +1108,7 @@ h1 {font-size:clamp(25px,2.4vw,34px);line-height:1.12;font-weight:780;letter-spa
       if(widget) widget.hidden = !isOpen;
     });
     persist();
+    scheduleGridSpans();
   }
   function move(id, delta) {
     const index = order.indexOf(id);
